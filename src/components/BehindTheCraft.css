@@ -1,0 +1,335 @@
+.craft {
+  background: #0a0a0a;
+  padding-block: 64px 56px;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ head */
+
+.craft__head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.craft__eyebrow {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.55em;
+  text-transform: uppercase;
+  color: var(--gold-500);
+  margin-bottom: 16px;
+}
+
+.craft__title {
+  font-size: clamp(30px, 5vw, 52px);
+  color: #fff;
+  text-transform: none;
+}
+
+/* The accent word is italic gold, matching the reference lockup. */
+.craft__title em {
+  font-style: italic;
+  background: linear-gradient(96deg, var(--gold-300), var(--gold-400) 55%, var(--gold-200));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: var(--gold-400);
+}
+
+.craft__rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin: 22px auto 0;
+  background: linear-gradient(90deg, transparent, var(--gold-500), transparent);
+}
+
+.craft__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.6);
+}
+
+.craft__status i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(201, 168, 76, 0.4);
+}
+
+.craft__status i.is-live {
+  background: var(--gold-400);
+  animation: craftPulse 2s ease-in-out infinite;
+}
+
+@keyframes craftPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+}
+
+/* ------------------------------------------------------------------ reel */
+
+.craft__reel {
+  position: relative;
+}
+
+.craft__track {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px clamp(16px, 5vw, 80px) 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.craft__track::-webkit-scrollbar {
+  display: none;
+}
+
+.craft-card {
+  flex: 0 0 auto;
+  width: clamp(150px, 15vw, 224px);
+  scroll-snap-align: center;
+  transition: width 0.55s var(--ease);
+}
+
+/* The active card grows and lifts out of the row. */
+.craft-card.is-active {
+  width: clamp(190px, 18vw, 262px);
+}
+
+.craft-card__hit {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 15;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #101014;
+  cursor: pointer;
+  filter: grayscale(0.6) brightness(0.4);
+  transform: scale(0.96);
+  transition: filter 0.55s var(--ease), transform 0.55s var(--ease),
+    box-shadow 0.55s var(--ease);
+}
+
+.craft-card.is-adj .craft-card__hit {
+  filter: grayscale(0.4) brightness(0.55);
+}
+
+.craft-card.is-active .craft-card__hit {
+  filter: none;
+  transform: scale(1);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(201, 168, 76, 0.45);
+}
+
+.craft-card__hit:hover {
+  filter: grayscale(0.15) brightness(0.85);
+}
+
+.craft-card video,
+.craft-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Sound toggle on the active card. It is a <span role="button"> because it
+   sits inside the card's own <button>, and nested buttons are invalid. */
+.craft-card__sound {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(10, 10, 12, 0.62);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  color: var(--gold-300);
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.craft-card__sound:hover {
+  background: rgba(201, 168, 76, 0.28);
+  color: #fff;
+}
+
+.craft-card__veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    transparent 42%,
+    rgba(6, 6, 8, 0.85) 100%
+  );
+}
+
+/* Corner brackets — only drawn on the active card. */
+.craft-card__corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease);
+  z-index: 3;
+}
+
+.craft-card__corner--tl {
+  top: 9px;
+  left: 9px;
+  border-top: 1px solid var(--gold-400);
+  border-left: 1px solid var(--gold-400);
+}
+
+.craft-card__corner--br {
+  right: 9px;
+  bottom: 9px;
+  border-right: 1px solid var(--gold-400);
+  border-bottom: 1px solid var(--gold-400);
+}
+
+.craft-card.is-active .craft-card__corner {
+  opacity: 1;
+}
+
+/* Progress bar mirrors the auto-advance interval. */
+.craft-card__prog {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.14);
+  z-index: 3;
+}
+
+.craft-card__prog-fill {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  background: var(--gold-400);
+}
+
+.craft-card__info {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 16px;
+  text-align: left;
+  z-index: 2;
+  /* The card is a <button>, which resets colour to canvastext; without this
+     the wrapper inherits black and any future child text would vanish. */
+  color: #fff;
+}
+
+.craft-card__info em {
+  display: block;
+  font-family: var(--font-ui);
+  font-style: normal;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(201, 168, 76, 0.85);
+  margin-bottom: 5px;
+}
+
+.craft-card__info strong {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: clamp(12px, 1.2vw, 15px);
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.25;
+}
+
+/* ------------------------------------------------------------------- nav */
+
+.craft__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.craft__nav > button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  background: transparent;
+  color: var(--gold-400);
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.craft__nav > button:hover {
+  background: rgba(201, 168, 76, 0.14);
+  border-color: var(--gold-400);
+}
+
+.craft__dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.craft__dots button {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(201, 168, 76, 0.3);
+  transition: width 0.3s var(--ease), background 0.3s var(--ease);
+}
+
+.craft__dots button.is-active {
+  width: 26px;
+  border-radius: 3px;
+  background: var(--gold-400);
+}
+
+@media (max-width: 640px) {
+  .craft {
+    padding-block: 48px 40px;
+  }
+
+  .craft__head {
+    margin-bottom: 32px;
+  }
+
+  .craft__track {
+    gap: 14px;
+  }
+}

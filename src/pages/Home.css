@@ -1,0 +1,749 @@
+/* =============================================================== 01 · hero */
+
+.hero {
+  position: relative;
+  background: var(--navy-950);
+  overflow: hidden;
+  isolation: isolate;
+  /* Claim the horizontal axis for swipe while leaving vertical page
+     scrolling native to the browser. */
+  touch-action: pan-y;
+}
+
+/* The supplied stage plate is lit blue/magenta. Rotating it toward amber
+   keeps the photographic depth while letting the brass palette lead. */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  filter: sepia(0.55) hue-rotate(-14deg) saturate(1.25) brightness(0.72)
+    contrast(1.06);
+}
+
+.hero__veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* Near-black wash with a warm gold bloom on the right, so the stage
+     lighting behind reads as brass rather than blue. */
+  background: linear-gradient(
+      100deg,
+      rgba(5, 6, 8, 0.97) 0%,
+      rgba(5, 6, 8, 0.88) 34%,
+      rgba(10, 11, 15, 0.55) 62%,
+      rgba(120, 84, 20, 0.3) 100%
+    ),
+    linear-gradient(180deg, rgba(5, 6, 8, 0.6) 0%, transparent 32%);
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: 40px;
+  min-height: clamp(460px, 60vw, 580px);
+  padding-block: 60px 74px;
+}
+
+.hero__copy {
+  color: #fff;
+}
+
+.hero__copy h1 {
+  font-size: clamp(34px, 5.6vw, 58px);
+  font-weight: 700;
+  line-height: 1.06;
+  margin-bottom: 20px;
+}
+
+.hero__copy h1 span,
+.hero__copy h1 em {
+  display: block;
+  font-style: normal;
+}
+
+.hero__copy h1 em {
+  color: var(--red-500);
+}
+
+.hero__copy p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--on-dark-muted);
+  max-width: 46ch;
+  margin-bottom: 28px;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 13px;
+  flex-wrap: wrap;
+}
+
+.hero__art {
+  position: relative;
+  min-height: clamp(210px, 26vw, 300px);
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+
+/* Rack-light wash behind the unit. Black amplifiers on a near-black stage
+   have almost no edge contrast, so the product is lit from behind the way
+   a unit sits under stage wash — this is what makes it legible. */
+.hero__halo {
+  position: absolute;
+  z-index: -1;
+  inset: 6% -4%;
+  background: radial-gradient(
+      58% 62% at 50% 50%,
+      rgba(224, 176, 84, 0.42) 0%,
+      rgba(200, 146, 42, 0.2) 38%,
+      transparent 72%
+    ),
+    radial-gradient(
+      90% 44% at 50% 88%,
+      rgba(200, 146, 42, 0.22) 0%,
+      transparent 70%
+    );
+  filter: blur(6px);
+}
+
+.hero__product {
+  grid-area: 1 / 1;
+  width: 100%;
+  max-width: 640px;
+  object-fit: contain;
+  opacity: 0;
+  transform: translateY(14px) scale(0.98);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  /* Rim light + contact shadow: lifts the chassis off the background and
+     gives the front panel a readable edge. */
+  filter: drop-shadow(0 0 1px rgba(233, 200, 130, 0.55))
+    drop-shadow(0 2px 10px rgba(200, 146, 42, 0.3))
+    drop-shadow(0 30px 46px rgba(0, 0, 0, 0.72));
+}
+
+.hero__product.is-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Fine grain over the whole fold — keeps the large dark areas from
+   banding and reads like photographed hardware, not flat vector. */
+.hero__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+/* Slide indicator drawn as a fader track — the console vernacular the
+   products themselves come from, rather than generic dots. */
+.hero__dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(8, 9, 12, 0.55);
+  border: 1px solid rgba(200, 146, 42, 0.22);
+  backdrop-filter: blur(8px);
+  z-index: 3;
+}
+
+.hero__dots button {
+  position: relative;
+  width: 30px;
+  height: 14px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+
+/* The track. */
+.hero__dots button::before {
+  content: "";
+  position: absolute;
+  inset: 50% 2px auto;
+  height: 2px;
+  translate: 0 -50%;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.22);
+  transition: background 0.25s var(--ease);
+}
+
+/* The cap that rides it. */
+.hero__dots button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 2px;
+  width: 7px;
+  height: 12px;
+  translate: 0 -50%;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: left 0.42s var(--ease), background 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+
+.hero__dots button.is-active::before {
+  background: rgba(200, 146, 42, 0.5);
+}
+
+.hero__dots button.is-active::after {
+  left: calc(100% - 9px);
+  background: var(--gold-400);
+  box-shadow: 0 0 10px rgba(200, 146, 42, 0.75);
+}
+
+/* Swipe hint — only shown where a swipe is actually possible. */
+.hero__swipe {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .hero__swipe {
+    position: absolute;
+    bottom: 52px;
+    left: 50%;
+    translate: -50% 0;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    z-index: 3;
+    font-family: var(--font-ui);
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+  }
+
+  .hero__swipe svg {
+    animation: heroSwipe 1.9s ease-in-out infinite;
+  }
+}
+
+@keyframes heroSwipe {
+  0%,
+  100% {
+    transform: translateX(-3px);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateX(3px);
+    opacity: 1;
+  }
+}
+
+/* ============================================================== 02 · stats */
+
+.stats {
+  background: var(--navy-900);
+  border-block: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.stats__inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding-block: 26px;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #fff;
+  padding-inline: 14px;
+}
+
+.stat + .stat {
+  border-left: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.stat svg {
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.stat strong {
+  display: block;
+  font-size: clamp(19px, 2.4vw, 25px);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.stat span {
+  display: block;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--on-dark-dim);
+  white-space: pre-line;
+}
+
+/* ========================================================= 03 · categories */
+
+.section--deep {
+  background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-850) 100%);
+  color: var(--on-dark);
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: transform 0.22s var(--ease), border-color 0.22s var(--ease),
+    box-shadow 0.22s var(--ease);
+}
+
+.cat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200, 146, 42, 0.5);
+  box-shadow: var(--shadow-dark);
+}
+
+.cat-card__media {
+  height: 148px;
+  flex: 0 0 148px;
+  min-height: 0;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  padding: 18px 22px;
+  background: radial-gradient(
+    120% 90% at 50% 22%,
+    rgba(200, 146, 42, 0.14) 0%,
+    transparent 70%
+  );
+}
+
+.cat-card__media img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s var(--ease);
+}
+
+.cat-card:hover .cat-card__media img {
+  transform: scale(1.05);
+}
+
+.cat-card__body {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  background: var(--card-dark);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 20px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.cat-card__body h3 {
+  font-size: 16.5px;
+  margin-bottom: 7px;
+}
+
+.cat-card__body p {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--on-dark-dim);
+  white-space: pre-line;
+}
+
+.cat-card__go {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background: var(--blue-600);
+  color: #fff;
+  flex-shrink: 0;
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.cat-card:hover .cat-card__go {
+  background: var(--blue-500);
+  transform: translateX(3px);
+}
+
+/* =========================================================== 04 · featured */
+
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.feat-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--card-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  padding: 18px;
+  transition: transform 0.22s var(--ease), border-color 0.22s var(--ease);
+}
+
+.feat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200, 146, 42, 0.5);
+}
+
+.feat-card__media {
+  height: 120px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 12px;
+}
+
+.feat-card__media img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.feat-card__series {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--blue-400);
+  margin-bottom: 6px;
+}
+
+.feat-card h3 {
+  font-size: 17px;
+  margin-bottom: 3px;
+}
+
+.feat-card__sub {
+  font-size: 12.5px;
+  color: var(--on-dark-muted);
+  margin-bottom: 10px;
+}
+
+.feat-card__copy {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--on-dark-dim);
+  margin-bottom: 18px;
+  flex: 1;
+}
+
+/* ========================================================== 05 · solutions */
+
+.sol-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.sol-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 178px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-dark);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #fff;
+  transition: transform 0.22s var(--ease);
+}
+
+.sol-card:hover {
+  transform: translateY(-4px);
+}
+
+/* Each application tile carries its own lit-scene gradient. */
+.sol-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.sol-card--stage::before {
+  background: linear-gradient(165deg, #3a2a12 0%, #241a0e 55%, #12100c 100%),
+    radial-gradient(80% 60% at 30% 20%, rgba(255, 90, 180, 0.5), transparent);
+}
+
+.sol-card--install::before {
+  background: linear-gradient(165deg, #13151c 0%, #0e1015 60%, #08090c 100%);
+}
+
+.sol-card--worship::before {
+  background: linear-gradient(165deg, #3a2a12 0%, #241a0e 58%, #12100c 100%);
+}
+
+.sol-card--events::before {
+  background: linear-gradient(165deg, #171319 0%, #101218 60%, #08090c 100%);
+}
+
+.sol-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, transparent 30%, rgba(4, 8, 18, 0.8) 100%);
+}
+
+.sol-card__icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  margin-bottom: auto;
+}
+
+.sol-card h3 {
+  font-size: 16.5px;
+  margin: 14px 0 6px;
+}
+
+.sol-card p {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* ============================================================ 06 · brands */
+
+.brands {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.brands__half {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 52px clamp(24px, 4vw, 60px);
+  min-height: 260px;
+}
+
+.brands__half--qubix {
+  background: linear-gradient(115deg, #0a0b10 0%, #171319 55%, #101218 100%);
+  justify-content: flex-end;
+}
+
+.brands__half--lord {
+  background: linear-gradient(115deg, #1a1410 0%, #3a2a12 55%, #12100c 100%);
+}
+
+.brands__copy {
+  position: relative;
+  z-index: 1;
+  max-width: 340px;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.brands__half--qubix .brands__copy {
+  margin-left: auto;
+  width: min(340px, 100%);
+}
+
+.brands__copy p {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 16px 0 22px;
+}
+
+.brands__art {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.brands__art img {
+  width: 100%;
+  height: 132px;
+  max-height: 132px;
+  object-fit: contain;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+}
+
+/* =============================================================== 07 · why */
+
+.why__title {
+  margin-bottom: 44px;
+}
+
+.why__title .eyebrow {
+  margin-bottom: 8px;
+}
+
+.why__title h2 {
+  font-size: clamp(22px, 3.2vw, 31px);
+  text-transform: none;
+  letter-spacing: -0.02em;
+}
+
+.why__title::after {
+  display: none;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+}
+
+.why-card {
+  display: flex;
+  gap: 14px;
+  padding-right: 22px;
+}
+
+.why-card + .why-card {
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding-left: 26px;
+}
+
+.why-card svg {
+  color: var(--blue-400);
+  flex-shrink: 0;
+}
+
+.why-card h3 {
+  font-size: 14.5px;
+  margin-bottom: 7px;
+}
+
+.why-card p {
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--on-dark-dim);
+}
+
+.why__cta {
+  margin-top: 48px;
+}
+
+/* ======================================================== responsive */
+
+@media (max-width: 1080px) {
+  .cat-grid,
+  .feat-grid,
+  .sol-grid,
+  .why-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .why-card:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .why-card:nth-child(3) {
+    border-left: 0;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero__inner {
+    grid-template-columns: 1fr;
+    text-align: left;
+    padding-block: 44px 66px;
+  }
+
+  .hero__art {
+    order: -1;
+    min-height: 160px;
+  }
+
+  .stats__inner {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px 0;
+  }
+
+  .stat:nth-child(odd) {
+    border-left: 0;
+  }
+
+  .stat:nth-child(3),
+  .stat:nth-child(4) {
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+  }
+
+  .brands {
+    grid-template-columns: 1fr;
+  }
+
+  .brands__half {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding-block: 40px;
+  }
+
+  .brands__half--qubix .brands__copy,
+  .brands__copy {
+    margin: 0 auto;
+  }
+
+  .brands__art img {
+    max-height: 92px;
+  }
+}
+
+@media (max-width: 620px) {
+  .cat-grid,
+  .feat-grid,
+  .sol-grid,
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .why-card {
+    border-left: 0 !important;
+    padding-left: 0 !important;
+  }
+}

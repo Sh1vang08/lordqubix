@@ -1,0 +1,110 @@
+/* ==========================================================================
+   Qubix / LORD — Design tokens
+
+   Palette is built from the brand logo: antique gold on near-black, with
+   warm neutrals in between. The blue/red names below are kept as aliases
+   so every existing stylesheet re-themes from this one file.
+   ========================================================================== */
+
+:root {
+  /* Gold — the brand colour, straight from the logo wordmark. */
+  --gold-500: #c8922a;
+  --gold-400: #d9a63f;
+  --gold-300: #e3bb68;
+  --gold-200: #efd39a;
+  --gold-600: #a97615;
+  --gold-glow: rgba(200, 146, 42, 0.28);
+
+  /* Near-black shell with a warm cast, so gold sits on it without
+     looking cold or "tech blue". */
+  --navy-950: #050608;
+  --navy-900: #0a0b0f;
+  --navy-850: #0e1015;
+  --navy-800: #141720;
+  --navy-700: #1c2030;
+  --navy-600: #262b3c;
+
+  /* "Paper" shell — the listing/detail surfaces. These were white in the
+     original mockups; the brand palette is dark-first, so they now resolve
+     to deep neutrals and the pages re-theme without markup changes. */
+  --paper: #0a0b0f;
+  --paper-alt: #0e1015;
+  --paper-line: rgba(255, 255, 255, 0.08);
+
+  /* Brand aliases — every page stylesheet references these names, so
+     remapping them here re-themes the whole site to gold. */
+  --blue-600: var(--gold-500);
+  --blue-500: var(--gold-400);
+  --blue-400: var(--gold-400);
+  --blue-300: var(--gold-200);
+  --red-600: var(--gold-500);
+  --red-500: var(--gold-400);
+  --magenta-500: var(--gold-500);
+  --magenta-400: var(--gold-300);
+  --green-whatsapp: #25d366;
+  --green-whatsapp-dark: #1da851;
+
+  /* Text. "ink" names read as dark-on-light in the original mockups; with
+     the dark shell they resolve to light-on-dark instead. */
+  --ink-900: #ffffff;
+  --ink-700: #c4c1b9;
+  --ink-500: #8a877f;
+  --on-dark: #ffffff;
+  --on-dark-muted: #b6b3ab;
+  --on-dark-dim: #8a877f;
+
+  /* Raised panel on the dark shell — cards, inputs, sidebars. */
+  --surface: #101218;
+  --surface-hover: #171a23;
+  --surface-tint: rgba(200, 146, 42, 0.08);
+
+  /* Surfaces on dark */
+  --card-dark: #101218;
+  --card-dark-hover: #171a23;
+  --border-dark: rgba(255, 255, 255, 0.07);
+  --border-dark-strong: rgba(200, 146, 42, 0.3);
+
+  /* Type
+     --font-display : Anton, the heavy compressed poster face for headlines
+     --font-ui      : Barlow Condensed for nav, eyebrows, buttons, stats
+     --font-sans    : Roboto Condensed for body copy */
+  --font-sans: "Roboto Condensed", "Segoe UI", -apple-system,
+    BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Anton", "Roboto Condensed", Impact, sans-serif;
+  --font-ui: "Barlow Condensed", "Roboto Condensed", sans-serif;
+  --fw-head: 700;
+  --fw-ui: 600;
+  --fw-body: 400;
+
+  /* Anton is a single-weight face that runs tall and tight; these keep
+     headline blocks from looking loose next to the condensed body text. */
+  --display-tracking: 0.005em;
+  --display-leading: 1.02;
+
+  /* Rhythm */
+  --shell: 1240px;
+  --gutter: 24px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+  --r-xl: 20px;
+
+  --section-y: 84px;
+  --section-y-sm: 56px;
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 12px 34px rgba(0, 0, 0, 0.12);
+  --shadow-dark: 0 14px 40px rgba(0, 0, 0, 0.45);
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --section-y: 56px;
+    --section-y-sm: 40px;
+    --gutter: 18px;
+  }
+}

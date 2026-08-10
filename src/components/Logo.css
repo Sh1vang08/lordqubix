@@ -1,0 +1,104 @@
+/* The supplied lockup. Its artwork is gold + white on transparent, so it
+   sits directly on the dark shell with no plate behind it. */
+.brand-logo {
+  width: auto;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: flex-start;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.wordmark sup {
+  font-size: 0.42em;
+  font-weight: 600;
+  line-height: 1;
+  margin-left: 0.12em;
+  translate: 0 0.15em;
+}
+
+/* LORD is a boxed slab wordmark with rules above and below. */
+.wordmark--lord {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  font-family: var(--font-sans);
+}
+
+.wordmark__lord-inner {
+  display: inline-block;
+  padding: 0.12em 0.1em 0.1em;
+  border-top: 0.14em solid currentColor;
+  border-bottom: 0.14em solid currentColor;
+  transform: scaleX(1.06);
+}
+
+.logo-stack {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(3px * var(--s, 1));
+  line-height: 1;
+}
+
+.logo-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(12px * var(--s, 1));
+}
+
+.logo-inline__bar {
+  width: 1px;
+  height: calc(22px * var(--s, 1));
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.logo-pro {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(2px * var(--s, 1));
+  line-height: 1;
+}
+
+.logo-pro em {
+  font-style: normal;
+  font-size: calc(7.5px * var(--s, 1));
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--on-dark-muted);
+}
+
+.logo-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(11px * var(--s, 1));
+}
+
+.logo-tagline__bar {
+  width: 1px;
+  height: calc(24px * var(--s, 1));
+  background: rgba(255, 255, 255, 0.26);
+}
+
+.logo-tagline__lord {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(2px * var(--s, 1));
+  line-height: 1;
+}
+
+.logo-tagline__lord em {
+  font-style: normal;
+  font-size: calc(6.5px * var(--s, 1));
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: var(--on-dark-muted);
+}

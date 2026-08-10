@@ -1,0 +1,570 @@
+.pd {
+  background: var(--paper);
+}
+
+.pd__crumbs {
+  padding-block: 16px;
+}
+
+/* ---------------------------------------------------------------- top */
+
+.pd__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 44px;
+  padding-bottom: 42px;
+}
+
+.pd__stage {
+  background: linear-gradient(170deg, #14161d 0%, #0c0e13 100%);
+  border-radius: var(--r-md);
+  height: clamp(240px, 30vw, 330px);
+  display: grid;
+  place-items: center;
+  padding: 30px;
+  overflow: hidden;
+}
+
+.pd__stage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.24));
+  animation: pdFade 0.35s var(--ease);
+}
+
+@keyframes pdFade {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+/* Arrows are fixed-width; the thumbnail grid takes the rest of the row.
+   A grid parent gives the middle track a definite size, which a flex row
+   with auto-basis children does not. */
+.pd__thumbs {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) 28px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.pd__thumbs ul {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  /* `flex: 1` alone resolves to a 0 basis here and collapses the track;
+     `auto` basis lets the grid claim the remaining row width. */
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+}
+
+.pd__thumbs li {
+  min-width: 0;
+}
+
+.pd__thumbs button {
+  width: 100%;
+  min-width: 0;
+  height: 58px;
+  display: block;
+  padding: 6px;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  transition: border-color 0.18s var(--ease);
+}
+
+.pd__thumbs button.is-active {
+  border-color: var(--blue-600);
+  box-shadow: 0 0 0 1px var(--blue-600);
+}
+
+.pd__thumbs button img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pd__arrow {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-500);
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: background 0.16s var(--ease), color 0.16s var(--ease);
+}
+
+.pd__arrow:hover {
+  background: #eef2f8;
+  color: var(--blue-600);
+}
+
+/* --------------------------------------------------------------- info */
+
+.pd__info h1 {
+  font-size: clamp(24px, 3.4vw, 34px);
+  color: var(--ink-900);
+  margin: 12px 0 14px;
+}
+
+.pd__intro {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--ink-700);
+  margin-bottom: 24px;
+}
+
+.pd__label {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-700);
+  margin-bottom: 10px;
+}
+
+.pd__models {
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--paper-line);
+  margin-bottom: 20px;
+}
+
+.pd__model-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pd__model {
+  padding: 9px 20px;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-700);
+  transition: all 0.18s var(--ease);
+}
+
+.pd__model:hover {
+  border-color: var(--blue-400);
+  color: var(--blue-600);
+}
+
+.pd__model.is-active {
+  background: var(--blue-600);
+  border-color: var(--blue-600);
+  color: #fff;
+}
+
+.pd__highlights {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.pd__highlights li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-700);
+  line-height: 1.55;
+}
+
+.pd__highlights svg {
+  color: var(--blue-600);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pd__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  max-width: 300px;
+}
+
+/* ------------------------------------------------------------ pillars */
+
+.pd__pillars {
+  background: linear-gradient(100deg, #0d0f14 0%, #141118 100%);
+  color: #fff;
+  padding-block: 34px;
+}
+
+.pd__pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  text-align: center;
+}
+
+.pd__pillars-grid article {
+  padding-inline: 16px;
+}
+
+.pd__pillars-grid article + article {
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.pd__pillars-grid svg {
+  color: var(--blue-300);
+  margin-bottom: 10px;
+}
+
+.pd__pillars-grid h3 {
+  font-size: 15px;
+  color: var(--blue-300);
+  margin-bottom: 8px;
+}
+
+.pd__pillars-grid p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ------------------------------------------------------------- design */
+
+.pd__design-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 44px;
+  align-items: center;
+}
+
+.pd__design h2 {
+  font-size: clamp(22px, 3vw, 29px);
+  color: var(--ink-900);
+  margin-bottom: 14px;
+}
+
+.pd__design-copy {
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--ink-700);
+  margin-bottom: 20px;
+}
+
+.pd__checks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pd__checks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--ink-700);
+}
+
+.pd__checks svg {
+  color: var(--blue-600);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pd__design-shot img {
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 32px rgba(0, 0, 0, 0.22));
+}
+
+/* -------------------------------------------------------------- specs */
+
+.pd__specs-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+  margin-bottom: 16px;
+}
+
+/* The spec table is wider than a phone; it scrolls inside its own box so
+   the page body never scrolls sideways. */
+.pd__table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  border: 1px solid var(--paper-line);
+  border-radius: var(--r-sm);
+}
+
+.pd__table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.pd__table thead th {
+  background: var(--navy-800);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 12px 14px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.pd__table thead th:first-child {
+  text-align: left;
+}
+
+.pd__table thead th.is-active {
+  background: var(--blue-600);
+}
+
+.pd__table tbody th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-900);
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  white-space: nowrap;
+}
+
+.pd__table tbody td {
+  padding: 10px 14px;
+  text-align: center;
+  color: var(--ink-700);
+  border-left: 1px solid rgba(255,255,255,0.07);
+}
+
+.pd__table tbody td.is-active {
+  background: rgba(200,146,42,0.10);
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+.pd__table tbody tr {
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.pd__table tbody tr:nth-child(even) th,
+.pd__table tbody tr:nth-child(even) td {
+  background: rgba(255,255,255,0.02);
+}
+
+.pd__table tbody tr:nth-child(even) td.is-active {
+  background: rgba(200, 146, 42, 0.16);
+}
+
+.pd__table td.is-span {
+  font-style: normal;
+  color: var(--ink-700);
+}
+
+/* --------------------------------------------------------------- apps */
+
+.pd__apps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.pd__apps article {
+  background: var(--surface);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--r-md);
+  padding: 24px 18px;
+  text-align: center;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.pd__apps article:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.pd__apps svg {
+  color: var(--blue-600);
+  margin: 0 auto 12px;
+}
+
+.pd__apps h3 {
+  font-size: 15px;
+  color: var(--ink-900);
+  margin-bottom: 7px;
+}
+
+.pd__apps p {
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ink-500);
+}
+
+/* ------------------------------------------------------------ related */
+
+.pd__related-title {
+  font-size: clamp(20px, 2.8vw, 26px);
+  color: var(--ink-900);
+  margin-bottom: 26px;
+}
+
+.pd__related {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.pd__related article {
+  display: flex;
+  flex-direction: column;
+}
+
+.pd__related-shot {
+  height: 108px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(170deg, #14161d 0%, #0c0e13 100%);
+  border-radius: var(--r-sm);
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.pd__related-shot img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.pd__related h3 {
+  font-size: 14px;
+  color: var(--ink-900);
+  margin-bottom: 4px;
+}
+
+.pd__related p {
+  font-size: 12.5px;
+  color: var(--ink-500);
+  margin-bottom: 10px;
+  flex: 1;
+}
+
+.pd__related-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--blue-600);
+  transition: gap 0.18s var(--ease);
+}
+
+.pd__related-link:hover {
+  gap: 11px;
+}
+
+/* ---------------------------------------------------------------- cta */
+
+.pd__cta {
+  background: linear-gradient(100deg, #0d0f14 0%, #1a1712 100%);
+  color: #fff;
+}
+
+.pd__cta-inner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-block: 32px;
+  flex-wrap: wrap;
+}
+
+.pd__cta-glyph {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.32);
+  flex-shrink: 0;
+}
+
+.pd__cta-inner > div:nth-child(2) {
+  flex: 1;
+  min-width: 220px;
+}
+
+.pd__cta h2 {
+  font-size: clamp(19px, 2.5vw, 24px);
+  margin-bottom: 6px;
+}
+
+.pd__cta p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 52ch;
+}
+
+.pd__cta-btn {
+  background: var(--surface);
+  color: var(--ink-900);
+  flex-shrink: 0;
+}
+
+.pd__cta-btn:hover {
+  background: rgba(200,146,42,0.16);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 1024px) {
+  .pd__pillars-grid,
+  .pd__apps,
+  .pd__related {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 28px;
+  }
+
+  .pd__pillars-grid article:nth-child(odd) {
+    border-left: 0;
+  }
+}
+
+@media (max-width: 880px) {
+  .pd__top,
+  .pd__design-inner {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .pd__actions {
+    max-width: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .pd__apps,
+  .pd__related {
+    grid-template-columns: 1fr;
+  }
+
+  .pd__pillars-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pd__pillars-grid article {
+    border-left: 0 !important;
+  }
+
+  .pd__cta-btn {
+    width: 100%;
+  }
+}
