@@ -1,14 +1,14 @@
 // Central content source for the Qubix / LORD site.
 // Copy and specifications follow the approved mockups and supplied catalogue.
 
-export const WHATSAPP_NUMBER = "919876543210";
+export const WHATSAPP_NUMBER = "918130032574";
 
 export const whatsappLink = (message = "Hello Qubix, I would like product information.") =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
 export const CONTACT = {
-  phone: "+91 98765 43210",
-  phoneAlt: "+91 124 476 9100",
+  phone: "+91 81300 32574",
+  phoneAlt: "+91 81300 32574",
   email: "sales@qubixproaudio.com",
   emailAlt: "info@qubixlord.com",
   hours: "Mon – Sat, 10:00 AM – 6:00 PM IST",
