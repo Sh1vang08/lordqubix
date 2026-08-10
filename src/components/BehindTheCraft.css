@@ -27,9 +27,16 @@
   text-transform: none;
 }
 
-/* The accent word is italic gold, matching the reference lockup. */
+/* The accent word is italic gold, matching the reference lockup.
+   `background-clip: text` paints only inside the element's own box, and the
+   italic slant pushes the last glyph past that edge — which sheared the "t"
+   off "Craft". Padding widens the paint box and the matching negative margin
+   keeps the word optically centred against the heading. */
 .craft__title em {
   font-style: italic;
+  display: inline-block;
+  padding-right: 0.14em;
+  margin-right: -0.06em;
   background: linear-gradient(96deg, var(--gold-300), var(--gold-400) 55%, var(--gold-200));
   -webkit-background-clip: text;
   background-clip: text;
