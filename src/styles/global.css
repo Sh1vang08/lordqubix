@@ -12,8 +12,17 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* Deliberately NOT `scroll-behavior: smooth` globally.
+     With it set, any involuntary scroll correction — the browser clamping
+     scrollY when late images shorten the document, or ScrollTrigger
+     re-measuring on refresh — is animated, so a correction the visitor should
+     never notice reads as the page gliding upward on its own. In-page anchor
+     links opt into smooth scrolling explicitly via scrollIntoView instead. */
   -webkit-text-size-adjust: 100%;
+
+  /* Let the browser hold the visitor's reading position when content above
+     the viewport changes height (late images, reveals settling). */
+  overflow-anchor: auto;
 }
 
 body {

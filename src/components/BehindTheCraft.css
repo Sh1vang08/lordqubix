@@ -109,6 +109,18 @@
   display: none;
 }
 
+/* Reserve the tallest card's height on the row itself.
+   Cards are width-animated and their `aspect-ratio` turns that width into
+   height, so without a fixed row height the whole section grew and shrank on
+   every auto-advance. That resized the document every few seconds and pushed
+   the content below it up and down — the page appeared to scroll by itself.
+   Height here is the active card's width (18vw, clamped) times the 15/9 card
+   ratio, so the row is always exactly as tall as its largest child. */
+.craft__track {
+  height: calc(clamp(190px, 18vw, 262px) * 15 / 9);
+  box-sizing: content-box;
+}
+
 .craft-card {
   flex: 0 0 auto;
   width: clamp(150px, 15vw, 224px);

@@ -27,7 +27,10 @@ export default function ScrollRail() {
     });
 
     // Route changes swap page height; recompute so the rail stays accurate.
-    const id = setTimeout(() => ScrollTrigger.refresh(), 300);
+    // Deferred to the next frame after paint so the new page's images and
+    // reveals have settled — refreshing mid-settle re-measures against a
+    // height that is still changing and can shift the scroll position.
+    const id = setTimeout(() => ScrollTrigger.refresh(), 500);
 
     return () => {
       clearTimeout(id);

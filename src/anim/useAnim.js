@@ -32,7 +32,17 @@ export function useGsap(setup, deps = []) {
     // Product imagery settles late and shifts the layout under already-computed
     // trigger positions, which can strand an element mid-tween. Refresh once
     // the page has loaded and again after any late image decodes.
-    const refresh = () => ScrollTrigger.refresh();
+    //
+    // Coalesced: a page carries dozens of images, and refreshing per decode
+    // meant a burst of full-document recalculations. Each one re-measures
+    // every trigger and can nudge the scroll position, which read as the page
+    // drifting upward on its own. One refresh on the trailing edge does the
+    // same job without the churn.
+    let refreshPending = 0;
+    const refresh = () => {
+      clearTimeout(refreshPending);
+      refreshPending = setTimeout(() => ScrollTrigger.refresh(), 150);
+    };
     window.addEventListener("load", refresh);
 
     const imgs = Array.from(scope.current?.querySelectorAll("img") || []);
@@ -58,13 +68,34 @@ export function useGsap(setup, deps = []) {
       const root = scope.current;
       if (!root) return;
       const vh = window.innerHeight;
+
+      // Anchor against the document height. Clearing transforms can shorten
+      // the page, and when the document shrinks the browser clamps scrollY to
+      // the new maximum — which the visitor sees as the page sliding upward on
+      // its own. Restore the position if this pass caused the page to move.
+      const beforeY = window.scrollY;
+
       root.querySelectorAll("*").forEach((el) => {
         if (parseFloat(window.getComputedStyle(el).opacity) > 0.01) return;
         // Only rescue what the user has already scrolled past; anything
         // still below the fold has a legitimate pending reveal.
         const r = el.getBoundingClientRect();
         if (r.top < vh * 0.9 && (r.width > 0 || r.height > 0)) {
-          gsap.set(el, { clearProps: "opacity,transform" });
+          // Clear opacity only. `transform` participates in the reveal's
+          // resting state, and wiping it here re-flowed the section and moved
+          // the scroll position under the visitor.
+          gsap.set(el, { clearProps: "opacity" });
+        }
+      });
+
+      // The correction can also land on the next frame, once the browser has
+      // re-laid-out and scroll anchoring has adjusted for the size change.
+      if (window.scrollY !== beforeY) {
+        window.scrollTo({ top: beforeY, left: 0, behavior: "instant" });
+      }
+      requestAnimationFrame(() => {
+        if (Math.abs(window.scrollY - beforeY) > 1) {
+          window.scrollTo({ top: beforeY, left: 0, behavior: "instant" });
         }
       });
     };
