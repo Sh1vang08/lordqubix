@@ -287,6 +287,14 @@ const P = {
   check: <path d="m4.5 12.5 5 5 10-11" />,
   chevron: <path d="m9 5.5 6.5 6.5L9 18.5" />,
   "chevron-down": <path d="m5.5 9 6.5 6.5L18.5 9" />,
+  // Drawn with the shared stroke settings: rounded square, lens, flash.
+  instagram: (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.2" cy="6.8" r="0.9" fill="currentColor" stroke="none" />
+    </>
+  ),
   whatsapp: null, // rendered as a filled glyph below
 };
 

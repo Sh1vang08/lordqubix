@@ -22,6 +22,11 @@ export const CONTACT_PEOPLE = [
   { name: "Rajat Sharma", phone: "+91 99994 69110" },
 ];
 
+export const SOCIAL = {
+  instagram: "https://instagram.com/qubix_professional",
+  instagramHandle: "@qubix_professional",
+};
+
 /* ----------------------------------------------------------------- images */
 
 const img = (file) =>
@@ -241,30 +246,38 @@ export const FEATURED = [
   },
 ];
 
+/** Venue photography behind each solution card. */
+const solutionBg = (file) =>
+  new URL(`../assets/solutions/${file}.webp`, import.meta.url).href;
+
 export const SOLUTIONS = [
   {
     icon: "mic",
     title: "Live Sound",
     copy: "Powerful performance for any stage.",
     tone: "stage",
+    image: solutionBg("live-sound"),
   },
   {
     icon: "settings",
     title: "Installations",
     copy: "Reliable solutions for permanent setups.",
     tone: "install",
+    image: solutionBg("installations"),
   },
   {
     icon: "home",
     title: "Houses of Worship",
     copy: "Clarity and coverage that inspires.",
     tone: "worship",
+    image: solutionBg("houses-of-worship"),
   },
   {
     icon: "calendar",
     title: "Corporate & Events",
     copy: "Professional audio for every event.",
     tone: "events",
+    image: solutionBg("corporate-events"),
   },
 ];
 

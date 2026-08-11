@@ -13,6 +13,7 @@ import {
   WHY_QUBIX,
   BG,
   whatsappLink,
+  SOCIAL,
 } from "../data/site";
 import { url as catUrl } from "../data/catalogue";
 import {
@@ -473,6 +474,13 @@ export default function Home() {
             <div className="sol-grid">
               {SOLUTIONS.map((s) => (
                 <article className={`sol-card sol-card--${s.tone}`} key={s.title}>
+                  <img
+                    className="sol-card__bg"
+                    src={s.image}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                  />
                   <span className="sol-card__icon">
                     <Icon name={s.icon} size={22} />
                   </span>
@@ -486,6 +494,40 @@ export default function Home() {
 
         {/* --------------------------------------------- behind the craft */}
         <BehindTheCraft />
+
+        {/* ------------------------------------------------------ instagram */}
+        <section className="insta">
+          <div className="shell insta__inner">
+            <span className="insta__glyph" aria-hidden="true">
+              <Icon name="instagram" size={30} />
+            </span>
+
+            <div className="insta__copy">
+              <p className="eyebrow">Follow the Build</p>
+              <h2>
+                See every rig we ship on <em>Instagram</em>
+              </h2>
+              <p className="insta__lede">
+                Install shots from stages, studios and halls across India —
+                plus new arrivals and behind-the-bench looks at how each unit
+                is tested before it leaves us.
+              </p>
+            </div>
+
+            <div className="insta__action">
+              <a
+                className="btn btn--primary btn--lg"
+                href={SOCIAL.instagram}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <Icon name="instagram" size={18} />
+                Follow {SOCIAL.instagramHandle}
+              </a>
+              <small>New builds posted every week</small>
+            </div>
+          </div>
+        </section>
 
         {/* ---------------------------------------------------- brand split */}
         <section className="brands">

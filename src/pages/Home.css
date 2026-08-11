@@ -117,12 +117,19 @@
 }
 
 /* Only the active slide's artwork is rendered (see Home.jsx), so this styles
-   a single visible image rather than a stack of hidden ones. */
+   a single visible image rather than a stack of hidden ones.
+
+   The slides have different aspect ratios (2.86 vs 3.21), so letting the
+   image size itself made the hero grow and shrink on every rotation. That
+   resized the document every few seconds and shifted the page under the
+   visitor. A fixed box with object-fit: contain holds the layout still. */
 .hero__product {
   grid-area: 1 / 1;
   width: 100%;
   max-width: 640px;
+  aspect-ratio: 3 / 1;
   object-fit: contain;
+  object-position: center;
   /* One soft contact shadow, nothing else. Stacked glow/brightness filters
      traced the alpha edge of every grille hole and read as a blur. */
   filter: drop-shadow(0 22px 38px rgba(0, 0, 0, 0.7));
@@ -930,7 +937,9 @@
   .hero__product {
     width: 100%;
     max-width: 100%;
-    height: auto;
+    /* Keep the reserved aspect box — `height: auto` here let the differing
+       slide ratios resize the hero again on every rotation. */
+    aspect-ratio: 3 / 1;
   }
 
   /* Keep the artwork inside the page gutter rather than bleeding to the
@@ -976,4 +985,116 @@
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+/* Venue photography behind each solutions card.
+   The per-tone gradients above remain as the scrim: the photo sits under
+   them, so the headline and copy keep their contrast on every image. */
+.sol-card__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  transition: transform 0.6s var(--ease);
+}
+
+.sol-card:hover .sol-card__bg {
+  transform: scale(1.05);
+}
+
+/* With a photograph underneath, the tone gradients only need to darken the
+   lower half enough to hold the text — not paint the whole tile. */
+.sol-card::before {
+  background: linear-gradient(
+    180deg,
+    rgba(6, 7, 10, 0.15) 0%,
+    rgba(6, 7, 10, 0.55) 52%,
+    rgba(6, 7, 10, 0.88) 100%
+  ) !important;
+}
+
+/* ======================================================= instagram invite */
+
+.insta {
+  background: linear-gradient(120deg, #0d0f14 0%, #1a1410 55%, #0d0f14 100%);
+  border-block: 1px solid rgba(200, 146, 42, 0.18);
+}
+
+.insta__inner {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding-block: 40px;
+  flex-wrap: wrap;
+}
+
+.insta__glyph {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  flex-shrink: 0;
+  border-radius: 18px;
+  color: #fff;
+  /* The Instagram gradient, kept muted so it sits inside the brass palette. */
+  background: linear-gradient(135deg, #7a3c9d 0%, #c1355e 45%, #d97a2b 100%);
+  box-shadow: 0 12px 30px rgba(193, 53, 94, 0.28);
+}
+
+.insta__copy {
+  flex: 1;
+  min-width: 260px;
+}
+
+.insta__copy h2 {
+  font-size: clamp(22px, 3vw, 32px);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.insta__copy h2 em {
+  font-style: italic;
+  display: inline-block;
+  padding-right: 0.14em;
+  margin-right: -0.06em;
+  color: var(--gold-400);
+}
+
+.insta__lede {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--on-dark-muted);
+  max-width: 56ch;
+}
+
+.insta__action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.insta__action small {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+@media (max-width: 860px) {
+  .insta__inner {
+    gap: 20px;
+  }
+
+  .insta__action {
+    width: 100%;
+  }
+
+  .insta__action .btn {
+    width: 100%;
+  }
 }
