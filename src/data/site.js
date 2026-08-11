@@ -33,10 +33,10 @@ const img = (file) =>
   new URL(`../assets/products/${file}`, import.meta.url).href;
 
 export const BG = {
-  hero: new URL("../assets/backgrounds/hero-neon-audio-stage-1823x863.png", import.meta.url).href,
-  waveform: new URL("../assets/backgrounds/audio-waveform-banner-1983x793.png", import.meta.url).href,
-  grid: new URL("../assets/backgrounds/technical-wave-grid-1536x1024.png", import.meta.url).href,
-  map: new URL("../assets/backgrounds/contact-map-background-1536x1024.png", import.meta.url).href,
+  hero: new URL("../assets/backgrounds/hero-neon-audio-stage-1823x863.webp", import.meta.url).href,
+  waveform: new URL("../assets/backgrounds/audio-waveform-banner-1983x793.webp", import.meta.url).href,
+  grid: new URL("../assets/backgrounds/technical-wave-grid-1536x1024.webp", import.meta.url).href,
+  map: new URL("../assets/backgrounds/contact-map-background-1536x1024.webp", import.meta.url).href,
 };
 
 export const IMG = {

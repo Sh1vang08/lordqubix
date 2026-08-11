@@ -27,9 +27,47 @@ export default function BehindTheCraft() {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const [muted, setMuted] = useState(true);
+  // The reel is far below the fold and the clips total ~60MB. Nothing is
+  // fetched until the section is actually approaching the viewport.
+  const [inView, setInView] = useState(false);
   const scope = useRef(null);
   const barRef = useRef(null);
   const videoRefs = useRef([]);
+
+  useEffect(() => {
+    const el = scope.current;
+    if (!el) return undefined;
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return undefined;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "400px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Auto-advance only while the reel is on screen. Off-screen rotation was
+  // pulling in every clip in the background for a section nobody was looking
+  // at, which is what made the whole page feel slow.
+  const [onScreen, setOnScreen] = useState(false);
+  useEffect(() => {
+    const el = scope.current;
+    if (!el || typeof IntersectionObserver === "undefined") return undefined;
+    const io = new IntersectionObserver(
+      ([entry]) => setOnScreen(entry.isIntersecting),
+      { threshold: 0.25 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   // Play only the active clip; everything else rewinds and pauses so a
   // single decode is in flight at a time.
@@ -52,12 +90,13 @@ export default function BehindTheCraft() {
     []
   );
 
-  // Auto-advance, suspended while the pointer rests on the reel.
+  // Auto-advance, suspended while the pointer rests on the reel and while the
+  // section is off screen (no point rotating — or fetching — unseen clips).
   useEffect(() => {
-    if (paused) return undefined;
+    if (paused || !onScreen) return undefined;
     const id = setTimeout(() => go(active + 1), SLIDE_MS);
     return () => clearTimeout(id);
-  }, [active, paused, go]);
+  }, [active, paused, onScreen, go]);
 
   // Progress bar tracks the same interval as the auto-advance.
   useEffect(() => {
@@ -106,17 +145,23 @@ export default function BehindTheCraft() {
                   <span className="craft-card__corner craft-card__corner--tl" />
                   <span className="craft-card__corner craft-card__corner--br" />
 
+                  {/* A <video> with a src fetches it regardless of `preload`
+                      in most browsers, so the src is attached only to the
+                      clip being watched and the one queued next. The rest
+                      show their poster until they come up. */}
                   <video
                     ref={(node) => {
                       videoRefs.current[i] = node;
                     }}
-                    src={s.video}
+                    src={
+                      inView && (i === active || i === (active + 1) % SLIDES.length)
+                        ? s.video
+                        : undefined
+                    }
                     poster={s.poster}
                     loop
                     muted={muted}
                     playsInline
-                    // Only the active clip is worth fetching eagerly; the
-                    // rest stay on their poster until selected.
                     preload={i === active ? "auto" : "none"}
                   />
                   <span className="craft-card__veil" />
