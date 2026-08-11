@@ -284,6 +284,7 @@ const P = {
     </>
   ),
   arrow: <path d="M4 12h15m-5.5-5.5L19.5 12l-6 5.5" />,
+  check: <path d="m4.5 12.5 5 5 10-11" />,
   chevron: <path d="m9 5.5 6.5 6.5L9 18.5" />,
   "chevron-down": <path d="m5.5 9 6.5 6.5L18.5 9" />,
   whatsapp: null, // rendered as a filled glyph below

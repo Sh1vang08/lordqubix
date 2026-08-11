@@ -11,10 +11,9 @@ import "./Header.css";
  */
 const NAV = [
   { label: "Home", to: "/" },
-  { label: "About Us", to: "/about" },
   { label: "Products", to: "/products" },
   { label: "Power Amplifiers", to: "/products/power-amplifiers" },
-  { label: "QX Series", to: "/products/qx-series" },
+  { label: "About Us", to: "/about" },
   { label: "Contact", to: "/contact" },
 ];
 

@@ -76,7 +76,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin: 20px 0 22px;
+  margin: 20px 0 8px;
   flex-wrap: wrap;
 }
 
@@ -86,224 +86,90 @@
 }
 
 .ptab {
-  min-width: 62px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 9px 18px;
-  border-radius: var(--r-sm);
+  border-radius: 999px;
   border: 1px solid var(--paper-line);
   background: var(--surface);
-  font-size: 13px;
+  font-family: var(--font-ui);
+  font-size: 14px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--ink-700);
+  cursor: pointer;
   transition: all 0.18s var(--ease);
+}
+
+.ptab em {
+  font-style: normal;
+  font-size: 12px;
+  opacity: 0.7;
 }
 
 .ptab:hover {
-  border-color: var(--blue-400);
-  color: var(--blue-600);
+  border-color: var(--gold-500);
+  color: var(--gold-400);
 }
 
 .ptab.is-active {
-  background: var(--blue-600);
-  border-color: var(--blue-600);
-  color: #fff;
+  background: var(--gold-500);
+  border-color: var(--gold-500);
+  color: #0a0b0f;
 }
 
-.ptabs__count {
-  font-size: 13px;
-  color: var(--ink-500);
+.ptab.is-active em {
+  opacity: 0.85;
 }
 
-/* --------------------------------------------------------------- layout */
-
-.players {
-  display: grid;
-  grid-template-columns: 244px minmax(0, 1fr);
-  gap: 22px;
-  align-items: start;
-}
-
-/* ---------------------------------------------------------------- sidebar */
-
-.pside {
-  background: var(--surface);
-  border: 1px solid var(--paper-line);
-  border-radius: var(--r-md);
-  padding: 20px 16px;
-  position: sticky;
-  top: 88px;
-}
-
-.pside h2 {
-  font-size: 15px;
-  margin-bottom: 14px;
-  padding-inline: 4px;
-}
-
-.pside ul {
-  display: flex;
-  flex-direction: column;
-}
-
-.pside__item {
-  width: 100%;
+/* Sort control — a quiet companion to the brand pills. */
+.psort {
   display: flex;
   align-items: center;
-  gap: 11px;
-  padding: 11px 8px;
-  border: 0;
-  background: transparent;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  text-align: left;
-  font-size: 13px;
-  color: var(--ink-700);
-  border-radius: var(--r-sm);
-  transition: background 0.16s var(--ease), color 0.16s var(--ease);
-}
-
-.pside__item:hover {
-  background: rgba(200,146,42,0.10);
-  color: var(--blue-600);
-}
-
-.pside__item.is-active {
-  background: rgba(200,146,42,0.16);
-  color: var(--blue-600);
-  font-weight: 600;
-}
-
-.pside__item svg {
-  color: var(--blue-600);
-  flex-shrink: 0;
-}
-
-.pside__item span {
-  flex: 1;
-  min-width: 0;
-}
-
-.pside__item em {
-  font-style: normal;
-  font-size: 12px;
-  color: var(--ink-500);
-}
-
-.pside__reset {
-  width: 100%;
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   gap: 8px;
-  padding: 11px;
-  border: 1px solid var(--paper-line);
+}
+
+.psort span {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.psort button {
+  padding: 7px 14px;
   border-radius: var(--r-sm);
-  background: var(--surface);
-  font-size: 12.5px;
+  border: 1px solid var(--paper-line);
+  background: transparent;
+  font-size: 13px;
   font-weight: 600;
   color: var(--ink-700);
+  cursor: pointer;
   transition: all 0.18s var(--ease);
 }
 
-.pside__reset:hover {
-  border-color: var(--blue-400);
-  color: var(--blue-600);
+.psort button:hover {
+  border-color: var(--gold-500);
+  color: var(--gold-400);
 }
 
-/* ------------------------------------------------------------------ cards */
-
-.pgrid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 20px;
+.psort button.is-active {
+  border-color: var(--gold-500);
+  color: var(--gold-400);
+  background: var(--surface-tint);
 }
 
-.pcard {
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border: 1px solid var(--paper-line);
-  border-radius: var(--r-md);
-  padding: 16px;
-  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease),
-    border-color 0.2s var(--ease);
-}
-
-.pcard:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(200,146,42,0.45);
-}
-
-.pcard__brand {
-  margin-bottom: 6px;
-}
-
-.pcard__media {
-  height: 132px;
-  display: grid;
-  place-items: center;
-  padding: 10px 8px 14px;
-  margin-bottom: 14px;
-}
-
-.pcard__media img {
-  max-height: 100%;
-  max-width: 100%;
-  object-fit: contain;
-  transition: transform 0.28s var(--ease);
-}
-
-.pcard:hover .pcard__media img {
-  transform: scale(1.05);
-}
-
-.pcard__body {
-  flex: 1;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
-  margin-bottom: 14px;
-}
-
-.pcard__body h3 {
-  font-size: 15.5px;
-  color: var(--blue-600);
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-
-.pcard__body p {
-  font-size: 12.5px;
+.pcount {
+  font-size: 14px;
   color: var(--ink-500);
+  margin: 6px 0 22px;
 }
 
-.pcard__foot {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.pcount strong {
+  color: var(--ink-900);
 }
-
-.pcard__view {
-  flex: 1;
-}
-
-.pcard__wa {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--green-whatsapp);
-  color: #fff;
-  flex-shrink: 0;
-  transition: transform 0.18s var(--ease), background 0.18s var(--ease);
-}
-
-.pcard__wa:hover {
-  background: var(--green-whatsapp-dark);
-  transform: scale(1.08);
-}
-
-/* ------------------------------------------------------------------ empty */
 
 .pempty {
   background: var(--surface);
@@ -497,4 +363,21 @@
   .phelp__action .btn {
     width: 100%;
   }
+}
+
+/* Active category filter, shown as a removable chip next to the count. */
+.pchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--gold-500);
+  background: var(--surface-tint);
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gold-400);
+  cursor: pointer;
 }

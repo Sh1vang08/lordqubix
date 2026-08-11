@@ -691,7 +691,17 @@
 
   .hero__art {
     order: -1;
-    min-height: 160px;
+    /* The featured product is a wide unit; give it room rather than
+       squeezing it into a short box where it reads as a dark smudge. */
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+
+  /* The halo is sized for the desktop stage; at phone width it spills over
+     the product and washes it out. */
+  .hero__halo {
+    inset: 12% 2%;
+    opacity: 0.75;
   }
 
   .stats__inner {
@@ -745,5 +755,196 @@
   .why-card {
     border-left: 0 !important;
     padding-left: 0 !important;
+  }
+}
+
+/* ==========================================================================
+   Collections — browse by brand, then sub-category
+   Mirrors how the live site gets a visitor from "I need a mixer" to the
+   right models in two taps.
+   ========================================================================== */
+
+.collection {
+  margin-bottom: 40px;
+}
+
+.collection__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.collection__head h3 {
+  font-size: 22px;
+  color: var(--ink-900);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.collection__head em {
+  font-style: normal;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.collection__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--gold-400);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Category cards — a real model leads each one so the range is scannable. */
+.ccards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.ccard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--card-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.26s var(--ease), border-color 0.26s var(--ease),
+    box-shadow 0.26s var(--ease);
+}
+
+.ccard:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-dark-strong);
+  box-shadow: var(--shadow-dark);
+}
+
+.ccard__media {
+  height: 118px;
+  display: grid;
+  place-items: center;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ccard__media img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s var(--ease);
+}
+
+.ccard:hover .ccard__media img {
+  transform: scale(1.06);
+}
+
+.ccard__body {
+  padding: 14px 16px 18px;
+  flex: 1;
+}
+
+.ccard__body h4 {
+  font-size: 15.5px;
+  line-height: 1.3;
+  color: var(--ink-900);
+  margin-bottom: 4px;
+}
+
+.ccard__body p {
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.ccard__go {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  color: var(--gold-400);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.24s var(--ease), transform 0.24s var(--ease);
+}
+
+.ccard:hover .ccard__go {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+
+/* Hero slide featuring a real catalogue model.
+   The photography is a wide product on a square white canvas. Screening the
+   white out lets the unit sit on the dark stage without a giant white box,
+   and the aspect-ratio crop removes the empty margin above and below it. */
+/* Featured catalogue model. The artwork is a transparent cut-out cropped to
+   the unit, so it needs no plate — but it is a wide, mostly-dark chassis, so
+   it gets a brighter rim than the stock hero art to stay legible. */
+.hero__product--plate {
+  max-width: 560px;
+  filter: drop-shadow(0 0 2px rgba(255, 226, 170, 0.7))
+    drop-shadow(0 4px 16px rgba(200, 146, 42, 0.4))
+    drop-shadow(0 26px 44px rgba(0, 0, 0, 0.8));
+}
+
+@media (max-width: 900px) {
+  /* Every hero image, not just the featured model: as a grid item the img
+     resolves to its intrinsic width and spills past the right edge unless
+     width is pinned to the column. */
+  .hero__product {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Keep the artwork inside the page gutter rather than bleeding to the
+     screen edge, which reads as a cropped image. */
+  .hero__art {
+    padding-inline: 4px;
+  }
+}
+
+/* Headline figures for the featured model. */
+.hero__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+  margin-bottom: 26px;
+}
+
+.hero__specs li {
+  padding: 7px 14px;
+  border: 1px solid rgba(200, 146, 42, 0.4);
+  background: rgba(200, 146, 42, 0.1);
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--gold-300);
+}
+
+@media (max-width: 640px) {
+  .hero__specs li {
+    font-size: 11.5px;
+    padding: 6px 11px;
   }
 }

@@ -106,7 +106,7 @@ const DEFAULT_COLUMNS = [
       { label: "Home", to: "/" },
       { label: "All Products", to: "/products" },
       { label: "Power Amplifiers", to: "/products/power-amplifiers" },
-      { label: "QX Series", to: "/products/qx-series" },
+      { label: "QX Series", to: "/products/qx-4500" },
       { label: "About Us", to: "/about" },
       { label: "Contact Us", to: "/contact" },
     ],

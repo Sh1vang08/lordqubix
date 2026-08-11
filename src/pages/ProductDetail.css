@@ -8,30 +8,9 @@
 
 /* ---------------------------------------------------------------- top */
 
-.pd__top {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 44px;
-  padding-bottom: 42px;
-}
-
-.pd__stage {
-  background: linear-gradient(170deg, #14161d 0%, #0c0e13 100%);
-  border-radius: var(--r-md);
-  height: clamp(240px, 30vw, 330px);
-  display: grid;
-  place-items: center;
-  padding: 30px;
-  overflow: hidden;
-}
-
-.pd__stage img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.24));
-  animation: pdFade 0.35s var(--ease);
-}
+/* Layout and stage styling live in the catalogue-driven block at the end of
+   this file — the product photography is shot on white, so the stage is a
+   light plate rather than the dark gradient the old mock-up used. */
 
 @keyframes pdFade {
   from {
@@ -109,12 +88,6 @@
 
 /* --------------------------------------------------------------- info */
 
-.pd__info h1 {
-  font-size: clamp(24px, 3.4vw, 34px);
-  color: var(--ink-900);
-  margin: 12px 0 14px;
-}
-
 .pd__intro {
   font-size: 13.5px;
   line-height: 1.8;
@@ -185,13 +158,6 @@
   color: var(--blue-600);
   flex-shrink: 0;
   margin-top: 2px;
-}
-
-.pd__actions {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-  max-width: 300px;
 }
 
 /* ------------------------------------------------------------ pillars */
@@ -284,92 +250,8 @@
 
 /* -------------------------------------------------------------- specs */
 
-.pd__specs-title {
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--blue-600);
-  margin-bottom: 16px;
-}
-
 /* The spec table is wider than a phone; it scrolls inside its own box so
    the page body never scrolls sideways. */
-.pd__table-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  max-width: 100%;
-  border: 1px solid var(--paper-line);
-  border-radius: var(--r-sm);
-}
-
-.pd__table {
-  width: 100%;
-  min-width: 640px;
-  border-collapse: collapse;
-  font-size: 12.5px;
-}
-
-.pd__table thead th {
-  background: var(--navy-800);
-  color: #fff;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 12px 14px;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.pd__table thead th:first-child {
-  text-align: left;
-}
-
-.pd__table thead th.is-active {
-  background: var(--blue-600);
-}
-
-.pd__table tbody th {
-  text-align: left;
-  font-weight: 600;
-  color: var(--ink-900);
-  padding: 10px 14px;
-  background: rgba(255,255,255,0.03);
-  white-space: nowrap;
-}
-
-.pd__table tbody td {
-  padding: 10px 14px;
-  text-align: center;
-  color: var(--ink-700);
-  border-left: 1px solid rgba(255,255,255,0.07);
-}
-
-.pd__table tbody td.is-active {
-  background: rgba(200,146,42,0.10);
-  color: var(--ink-900);
-  font-weight: 600;
-}
-
-.pd__table tbody tr {
-  border-top: 1px solid rgba(255,255,255,0.07);
-}
-
-.pd__table tbody tr:nth-child(even) th,
-.pd__table tbody tr:nth-child(even) td {
-  background: rgba(255,255,255,0.02);
-}
-
-.pd__table tbody tr:nth-child(even) td.is-active {
-  background: rgba(200, 146, 42, 0.16);
-}
-
-.pd__table td.is-span {
-  font-style: normal;
-  color: var(--ink-700);
-}
-
 /* --------------------------------------------------------------- apps */
 
 .pd__apps {
@@ -410,66 +292,6 @@
 }
 
 /* ------------------------------------------------------------ related */
-
-.pd__related-title {
-  font-size: clamp(20px, 2.8vw, 26px);
-  color: var(--ink-900);
-  margin-bottom: 26px;
-}
-
-.pd__related {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-
-.pd__related article {
-  display: flex;
-  flex-direction: column;
-}
-
-.pd__related-shot {
-  height: 108px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(170deg, #14161d 0%, #0c0e13 100%);
-  border-radius: var(--r-sm);
-  padding: 12px;
-  margin-bottom: 14px;
-}
-
-.pd__related-shot img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.pd__related h3 {
-  font-size: 14px;
-  color: var(--ink-900);
-  margin-bottom: 4px;
-}
-
-.pd__related p {
-  font-size: 12.5px;
-  color: var(--ink-500);
-  margin-bottom: 10px;
-  flex: 1;
-}
-
-.pd__related-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: var(--blue-600);
-  transition: gap 0.18s var(--ease);
-}
-
-.pd__related-link:hover {
-  gap: 11px;
-}
 
 /* ---------------------------------------------------------------- cta */
 
@@ -566,5 +388,307 @@
 
   .pd__cta-btn {
     width: 100%;
+  }
+}
+
+/* ==========================================================================
+   Catalogue-driven detail page
+   The layout below replaces the single hardcoded example page: one product
+   image, the published feature highlights, and the manufacturer's own
+   specification table.
+   ========================================================================== */
+
+.pd__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+  padding-block: 12px 44px;
+}
+
+.pd__stage {
+  background: linear-gradient(170deg, #14161d 0%, #0c0e13 100%);
+  border-radius: var(--r-lg);
+  padding: clamp(18px, 3vw, 36px);
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+}
+
+.pd__stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.pd__info {
+  padding-top: 6px;
+}
+
+.pd__stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #4ade80;
+  margin-bottom: 14px;
+}
+
+.pd__stock i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+
+.pd__brand {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin-bottom: 6px;
+}
+
+.pd__info h1 {
+  font-size: clamp(30px, 4.6vw, 50px);
+  line-height: 1.04;
+  color: var(--ink-900);
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+
+.pd__tagline {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-700);
+  margin-bottom: 22px;
+}
+
+.pd__feats {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.pd__feats li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink-700);
+}
+
+.pd__feats svg {
+  color: var(--gold-400);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.pd__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.pd__trust {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pd__trust span {
+  color: var(--gold-500);
+  margin: 0 8px;
+}
+
+/* ------------------------------------------------------------ specs */
+
+.pd__specs {
+  padding-block: 40px 20px;
+  border-top: 1px solid var(--paper-line);
+}
+
+.pd__specs-head {
+  margin-bottom: 22px;
+}
+
+.pd__specs-head h2 {
+  font-size: clamp(24px, 3.4vw, 36px);
+  color: var(--ink-900);
+}
+
+.pd__specs-head h2 em {
+  font-style: italic;
+  display: inline-block;
+  padding-right: 0.14em;
+  margin-right: -0.06em;
+  color: var(--gold-400);
+}
+
+.pd__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pd__table tr {
+  border-bottom: 1px solid var(--paper-line);
+}
+
+.pd__table th,
+.pd__table td {
+  text-align: left;
+  padding: 13px 4px;
+  font-size: 14.5px;
+  vertical-align: top;
+}
+
+.pd__table th {
+  width: 42%;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--ink-500);
+}
+
+.pd__table td {
+  color: var(--ink-900);
+  font-weight: 600;
+}
+
+/* Model with no published table — say so plainly rather than invent figures. */
+.pd__nospec {
+  padding-block: 36px;
+  border-top: 1px solid var(--paper-line);
+}
+
+.pd__nospec h2 {
+  font-size: clamp(22px, 3vw, 30px);
+  color: var(--ink-900);
+  margin-bottom: 10px;
+}
+
+.pd__nospec p {
+  color: var(--ink-700);
+  max-width: 60ch;
+  margin-bottom: 18px;
+}
+
+/* ---------------------------------------------------------- related */
+
+.pd__related {
+  padding-block: 44px 20px;
+  border-top: 1px solid var(--paper-line);
+}
+
+.pd__related-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.pd__related-head h2 {
+  font-size: clamp(22px, 3vw, 32px);
+  color: var(--ink-900);
+}
+
+.pd__related-head h2 em {
+  font-style: italic;
+  display: inline-block;
+  padding-right: 0.14em;
+  margin-right: -0.06em;
+  color: var(--gold-400);
+}
+
+.pd__related-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-400);
+  text-decoration: none;
+}
+
+.pd__related-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 18px;
+}
+
+.pd__related-grid a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: transform 0.28s var(--ease), border-color 0.28s var(--ease);
+}
+
+.pd__related-grid a:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-dark-strong);
+}
+
+.pd__related-media {
+  background: var(--surface-hover);
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.pd__related-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.pd__related-cat {
+  display: block;
+  padding: 12px 14px 0;
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+}
+
+.pd__related-grid h3 {
+  padding: 6px 14px 0;
+  font-size: 15px;
+  color: var(--ink-900);
+  word-break: break-word;
+}
+
+.pd__related-grid p {
+  padding: 4px 14px 14px;
+  font-size: 12.5px;
+  color: var(--ink-500);
+}
+
+@media (max-width: 860px) {
+  .pd__top {
+    grid-template-columns: 1fr;
+  }
+
+  .pd__table th {
+    width: 50%;
   }
 }

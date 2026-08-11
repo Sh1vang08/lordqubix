@@ -23,6 +23,7 @@ import {
   EASE,
   DUR,
 } from "../anim/useAnim";
+import { PRODUCTS, productImage } from "../data/products";
 import "./CategoryAmplifiers.css";
 
 const RELATED = [
@@ -33,8 +34,33 @@ const RELATED = [
   { label: "Accessories", icon: "box" },
 ];
 
+/** Every amplifier in the catalogue, across both brands. */
+const AMPLIFIERS = PRODUCTS.filter((p) =>
+  /amplifier/i.test(p.category) || /amplifier/i.test(p.summary)
+).sort((a, b) => a.name.localeCompare(b.name));
+
+/**
+ * Models belonging to a series tab. The AMP_SERIES keys ("qx", "ca", …) are
+ * the model-name prefixes, so a series is everything whose name starts with
+ * that prefix — QX-4500 and QX-12000 both belong to "qx".
+ */
+const inSeries = (p, key) =>
+  key === "all" || p.name.toLowerCase().startsWith(`${key}-`);
+
+const countFor = (key) => AMPLIFIERS.filter((p) => inSeries(p, key)).length;
+
 export default function CategoryAmplifiers() {
-  const [activeSeries, setActiveSeries] = useState("qx");
+  const [activeSeries, setActiveSeries] = useState("all");
+
+  const shown = AMPLIFIERS.filter((p) => inSeries(p, activeSeries));
+
+  /** Select a series and bring the results into view, so a tap on a phone
+   *  visibly does something rather than only changing a highlight. */
+  const selectSeries = (key) => {
+    setActiveSeries(key);
+    const grid = document.getElementById("amp-models");
+    if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const scope = useGsap((self, root) => {
     const q = gsap.utils.selector(root);
@@ -140,18 +166,31 @@ export default function CategoryAmplifiers() {
               Explore Series
               <i />
             </p>
+            {/* Tapping a series filters the model grid below and scrolls to
+                it. Previously these only set state nothing read, so they
+                highlighted but did nothing — on a phone that reads as a
+                broken page. */}
             <div className="cat-select__tabs" role="tablist">
+              <button
+                role="tab"
+                aria-selected={activeSeries === "all"}
+                className={`cat-tab ${activeSeries === "all" ? "is-active" : ""}`}
+                onClick={() => selectSeries("all")}
+              >
+                <strong>All</strong>
+                <small>{AMPLIFIERS.length} models</small>
+              </button>
               {AMP_SERIES.map((s) => (
                 <button
                   key={s.key}
                   role="tab"
                   aria-selected={activeSeries === s.key}
                   className={`cat-tab ${activeSeries === s.key ? "is-active" : ""}`}
-                  onClick={() => setActiveSeries(s.key)}
+                  onClick={() => selectSeries(s.key)}
                 >
                   <img src={s.thumb} alt="" />
                   <strong>{s.name}</strong>
-                  <small>{s.tag}</small>
+                  <small>{countFor(s.key)} models</small>
                 </button>
               ))}
             </div>
@@ -188,57 +227,60 @@ export default function CategoryAmplifiers() {
           </div>
         </section>
 
-        {/* ------------------------------------------------- series cards */}
-        <section className="section section--paper-alt cat-series">
+        {/* --------------------------------------------- amplifier models */}
+        {/* One card per model, matching the rest of the catalogue. Stacking
+            a whole series inside a single card made individual models hard to
+            scan and gave each one nowhere to link to. */}
+        <section className="section section--paper-alt cat-series" id="amp-models">
           <div className="shell">
             <div className="rule-title">
-              <h2>Our Power Amplifier Series</h2>
+              <h2>
+                {activeSeries === "all"
+                  ? "Power Amplifiers"
+                  : AMP_SERIES.find((s) => s.key === activeSeries)?.name ||
+                    "Power Amplifiers"}
+              </h2>
             </div>
 
-            <div className="cat-series__grid">
-              {AMP_SERIES.map((s) => (
-                <article
-                  className={`series-card ${
-                    activeSeries === s.key ? "is-active" : ""
-                  }`}
-                  key={s.key}
-                >
-                  <h3 style={{ color: s.accent }}>{s.name}</h3>
-                  <p className="series-card__tag">{s.tag}</p>
-                  <p className="series-card__blurb">{s.blurb}</p>
+            <p className="ampgrid__count">
+              Showing <strong>{shown.length}</strong>{" "}
+              {shown.length === 1 ? "model" : "models"}
+              {activeSeries !== "all" && (
+                <button className="ampgrid__clear" onClick={() => selectSeries("all")}>
+                  Show all
+                </button>
+              )}
+            </p>
 
-                  <ul className="series-card__models">
-                    {s.models.map((m) => (
-                      <li key={m.name}>
-                        <div className="series-card__shot">
-                          <img src={m.image} alt={m.name} loading="lazy" />
-                        </div>
-                        <span>{m.name}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="series-card__foot">
-                    <Link
-                      className="btn btn--primary btn--sm series-card__cta"
-                      to="/products/qx-series"
-                    >
-                      View Series
-                    </Link>
-                    <a
-                      className="series-card__wa"
-                      href={whatsappLink(
-                        `Hello Qubix, I would like details on the ${s.name}.`
-                      )}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`Enquire about ${s.name} on WhatsApp`}
-                    >
-                      <Icon name="whatsapp" size={18} />
-                    </a>
+            <div className="ampgrid">
+              {shown.map((p) => (
+                <Link className="pcard" key={p.slug} to={`/products/${p.slug}`}>
+                  <div className="pcard__media">
+                    <img
+                      src={productImage(p.slug)}
+                      alt={p.name}
+                      loading="lazy"
+                      width="900"
+                      height="900"
+                    />
                   </div>
-                </article>
+                  <div className="pcard__body">
+                    <span className="pcard__cat">{p.brand}</span>
+                    <h3>{p.name}</h3>
+                    <p>{p.summary}</p>
+                  </div>
+                  <span className="pcard__view">
+                    View details
+                    <Icon name="chevron" size={13} />
+                  </span>
+                </Link>
               ))}
+            </div>
+
+            <div className="ampgrid__more">
+              <Link className="btn btn--outline btn--lg" to="/products">
+                Browse all {PRODUCTS.length} products
+              </Link>
             </div>
           </div>
         </section>

@@ -145,7 +145,7 @@ export default function About() {
                 innovation.
               </h2>
               <p className="ab-legacy__copy">
-                Founded in 1989, LORD began with pioneering microphone
+                Founded in 1987, LORD began with pioneering microphone
                 technologies and evolved into a trusted global brand for
                 professional audio systems.
               </p>

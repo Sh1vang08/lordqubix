@@ -6,14 +6,21 @@ export const WHATSAPP_NUMBER = "918130032574";
 export const whatsappLink = (message = "Hello Qubix, I would like product information.") =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
+/** Real business details, matching the live site. */
 export const CONTACT = {
   phone: "+91 81300 32574",
-  phoneAlt: "+91 81300 32574",
-  email: "sales@qubixproaudio.com",
-  emailAlt: "info@qubixlord.com",
-  hours: "Mon – Sat, 10:00 AM – 6:00 PM IST",
+  phoneAlt: "+91 99994 69110",
+  email: "qubixprofessional@gmail.com",
+  emailAlt: "qubixprofessional@gmail.com",
+  hours: "Mon – Sat, 10:00 AM – 7:00 PM IST",
   address: "Gurugram, Haryana, India",
 };
+
+/** Named contacts, as published on the live site. */
+export const CONTACT_PEOPLE = [
+  { name: "Aryan Sharma", phone: "+91 81300 32574" },
+  { name: "Rajat Sharma", phone: "+91 99994 69110" },
+];
 
 /* ----------------------------------------------------------------- images */
 
@@ -104,29 +111,42 @@ export const NAV = [
 
 /* --------------------------------------------------------------- homepage */
 
+/**
+ * Hero slides. The lead slide features a real model with its published
+ * figures, and links to that product's page — `product` is a catalogue slug,
+ * and when present the slide uses the catalogue photograph.
+ */
 export const HERO_SLIDES = [
   {
-    titleTop: "Precision in",
-    titleAccent: "Every Frequency",
-    copy: "Professional audio solutions engineered for power, clarity, and reliability. From live sound to installations—Qubix delivers performance you can trust.",
-    image: IMG.qx4800,
+    titleTop: "TD-9000",
+    titleAccent: "Class D Power",
+    copy: "5200W per channel at 2Ω with a damping factor of 2500. D/HD Class output, twin-fan cooling and full overload protection in a 3U chassis.",
+    product: "td-9000",
+    badges: ["5200W × 2 @ 2Ω", "Damping 2500", "3U · 42 Kg"],
   },
   {
-    titleTop: "Power That",
-    titleAccent: "Never Falters",
-    copy: "H Class circuitry, intelligent thermal management and rugged construction—built for continuous operation in the most demanding environments.",
-    image: IMG.qx12000,
+    titleTop: "TD-16000",
+    titleAccent: "Maximum Headroom",
+    copy: "7000W per channel at 2Ω and 14000W bridged, with a damping factor of 3500. Four-fan cooling for continuous operation under load.",
+    product: "td-16000",
+    badges: ["7000W × 2 @ 2Ω", "Damping 3500", "3U · 54 Kg"],
   },
   {
-    titleTop: "Control With",
-    titleAccent: "Total Clarity",
-    copy: "Precision mixing consoles and audio processing engineered for transparent sound and dependable control on every stage.",
-    image: IMG.mixerLarge,
+    titleTop: "QX-16000",
+    titleAccent: "High Efficiency",
+    copy: "6000W per channel at 2Ω with H Class output, short-circuit and overload protection, in a rugged 3U rack chassis.",
+    product: "qx-16000",
+    badges: ["6000W × 2 @ 2Ω", "12000W Bridged", "H Class Output"],
   },
 ];
 
+/** LORD was founded in 1987; the experience figure is derived so it never
+ *  goes stale and never contradicts the About page. */
+export const FOUNDED = 1987;
+export const YEARS_EXPERIENCE = new Date().getFullYear() - FOUNDED;
+
 export const STATS = [
-  { icon: "badge", value: "30+", label: "Years of\nExperience" },
+  { icon: "badge", value: `${YEARS_EXPERIENCE}+`, label: "Years of\nExperience" },
   { icon: "box", value: "500+", label: "Products in\nOur Catalogue" },
   { icon: "globe", value: "65+", label: "Countries\nWorldwide" },
   { icon: "shield", value: "100%", label: "Quality &\nReliability" },
@@ -193,31 +213,31 @@ export const FEATURED = [
     subtitle: "Dual Channel Power Amplifier",
     copy: "4800W max power. High headroom with superior thermal stability.",
     image: IMG.qx4500,
-    to: "/products/qx-series",
+    to: "/products/qx-4500",
   },
   {
     series: "CA SERIES",
     name: "CA-20",
-    subtitle: "Power Amplifier",
+    subtitle: "Dual Channel Power Amplifier",
     copy: "High efficiency amplifier for professional sound reinforcement.",
     image: IMG.ca20,
-    to: "/products/qx-series",
+    to: "/products/ca-20",
   },
   {
     series: "MG SERIES",
     name: "MG-16XU",
-    subtitle: "Mixing Console",
+    subtitle: "Line Mixing Console",
     copy: "16-channel analog mixer with built-in effects and USB.",
     image: IMG.mixerLarge,
-    to: "/products/qx-series",
+    to: "/products/mg-16xu",
   },
   {
     series: "WIRELESS SERIES",
     name: "KMC9",
-    subtitle: "Wireless Microphone System",
+    subtitle: "Professional Wireless Microphone",
     copy: "True diversity UHF system for clear and stable performance.",
     image: IMG.wirelessKmc9,
-    to: "/products/qx-series",
+    to: "/products/kmc9",
   },
 ];
 
@@ -287,24 +307,24 @@ export const PRODUCT_FILTERS = [
 ];
 
 export const PRODUCTS = [
-  { id: "qubix-qx-series-qx-10000", brand: "Qubix", name: "QX-10000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx2000, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-12000", brand: "Qubix", name: "QX-12000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx3500, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-16000", brand: "Qubix", name: "QX-16000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx4500, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-2000", brand: "Qubix", name: "QX-2000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx4800, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-3500", brand: "Qubix", name: "QX-3500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx7000, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-4500", brand: "Qubix", name: "QX-4500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx9000, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-4800", brand: "Qubix", name: "QX-4800", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx12000, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-6000", brand: "Qubix", name: "QX-6000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qxAlt1, to: "/products/qx-series" },
-  { id: "qubix-qx-series-qx-8000", brand: "Qubix", name: "QX-8000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qxAlt2, to: "/products/qx-series" },
-  { id: "qubix-ca-series-ca-12", brand: "Qubix", name: "CA-12", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.ca12, to: "/products/qx-series" },
-  { id: "qubix-ca-series-ca-20", brand: "Qubix", name: "CA-20", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.ca20, to: "/products/qx-series" },
-  { id: "qubix-ca-series-ca-40", brand: "Qubix", name: "CA-40", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.ca40, to: "/products/qx-series" },
-  { id: "qubix-mt-series-mt-1201", brand: "Qubix", name: "MT-1201", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1201, to: "/products/qx-series" },
-  { id: "qubix-mt-series-mt-1601", brand: "Qubix", name: "MT-1601", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1601, to: "/products/qx-series" },
-  { id: "qubix-mt-series-mt-1801", brand: "Qubix", name: "MT-1801", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1801, to: "/products/qx-series" },
-  { id: "qubix-mt-series-mt-26000", brand: "Qubix", name: "MT-26000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1201, to: "/products/qx-series" },
-  { id: "qubix-td-series-td-16000", brand: "Qubix", name: "TD-16000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.td1004, to: "/products/qx-series" },
-  { id: "qubix-td-series-td-9000", brand: "Qubix", name: "TD-9000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.td1504, to: "/products/qx-series" },
+  { id: "qubix-qx-series-qx-10000", brand: "Qubix", name: "QX-10000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx2000, to: "/products/qx-10000" },
+  { id: "qubix-qx-series-qx-12000", brand: "Qubix", name: "QX-12000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx3500, to: "/products/qx-12000" },
+  { id: "qubix-qx-series-qx-16000", brand: "Qubix", name: "QX-16000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx4500, to: "/products/qx-16000" },
+  { id: "qubix-qx-series-qx-2000", brand: "Qubix", name: "QX-2000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx4800, to: "/products/qx-2000" },
+  { id: "qubix-qx-series-qx-3500", brand: "Qubix", name: "QX-3500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx7000, to: "/products/qx-3500" },
+  { id: "qubix-qx-series-qx-4500", brand: "Qubix", name: "QX-4500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx9000, to: "/products/qx-4500" },
+  { id: "qubix-qx-series-qx-4800", brand: "Qubix", name: "QX-4800", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qx12000, to: "/products/qx-4800" },
+  { id: "qubix-qx-series-qx-6000", brand: "Qubix", name: "QX-6000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qxAlt1, to: "/products/qx-6000" },
+  { id: "qubix-qx-series-qx-8000", brand: "Qubix", name: "QX-8000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.qxAlt2, to: "/products/qx-8000" },
+  { id: "qubix-ca-series-ca-12", brand: "Qubix", name: "CA-12", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.ca12, to: "/products/ca-12" },
+  { id: "qubix-ca-series-ca-20", brand: "Qubix", name: "CA-20", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.ca20, to: "/products/ca-20" },
+  { id: "qubix-ca-series-ca-40", brand: "Qubix", name: "CA-40", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.ca40, to: "/products/ca-40" },
+  { id: "qubix-mt-series-mt-1201", brand: "Qubix", name: "MT-1201", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1201, to: "/products/mt-1201" },
+  { id: "qubix-mt-series-mt-1601", brand: "Qubix", name: "MT-1601", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1601, to: "/products/mt-1601" },
+  { id: "qubix-mt-series-mt-1801", brand: "Qubix", name: "MT-1801", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1801, to: "/products/mt-1801" },
+  { id: "qubix-mt-series-mt-26000", brand: "Qubix", name: "MT-26000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.mt1201, to: "/products/mt-26000" },
+  { id: "qubix-td-series-td-16000", brand: "Qubix", name: "TD-16000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.td1004, to: "/products/td-16000" },
+  { id: "qubix-td-series-td-9000", brand: "Qubix", name: "TD-9000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.td1504, to: "/products/td-9000" },
   { id: "qubix-mg-series-mg-10xu", brand: "Qubix", name: "MG-10XU", subtitle: "Mixing Consoles", category: "mixing-consoles", image: IMG.mixerLarge },
   { id: "qubix-mg-series-mg-16xu", brand: "Qubix", name: "MG-16XU", subtitle: "Mixing Consoles", category: "mixing-consoles", image: IMG.mixerSignature },
   { id: "qubix-mg-series-mg-24-14fx", brand: "Qubix", name: "MG-24/14FX", subtitle: "Mixing Consoles", category: "mixing-consoles", image: IMG.mixerLarge },
@@ -396,18 +416,18 @@ export const PRODUCTS = [
   { id: "speaker-18lm06", brand: "LORD", name: "18LM06", subtitle: "Speaker Drivers", category: "speakers", image: IMG.driver3 },
   { id: "speaker-18lm451", brand: "LORD", name: "18LM451", subtitle: "Speaker Drivers", category: "speakers", image: IMG.driver4 },
   { id: "speaker-18pd52", brand: "LORD", name: "18PD52", subtitle: "Speaker Drivers", category: "speakers", image: IMG.driver5 },
-  { id: "lord-power-amplifiers-dj1200", brand: "LORD", name: "DJ1200", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-dj1600", brand: "LORD", name: "DJ1600", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-dj2500", brand: "LORD", name: "DJ2500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-dj3600", brand: "LORD", name: "DJ3600", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-dj4000", brand: "LORD", name: "DJ4000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-hd5002", brand: "LORD", name: "HD5002", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-mt3500", brand: "LORD", name: "MT3500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-mt4500", brand: "LORD", name: "MT4500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-pbt501", brand: "LORD", name: "PBT501", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-pbt701", brand: "LORD", name: "PBT701", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-ssa350", brand: "LORD", name: "SSA350", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/qx-series" },
-  { id: "lord-power-amplifiers-ssa6500", brand: "LORD", name: "SSA6500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/qx-series" },
+  { id: "lord-power-amplifiers-dj1200", brand: "LORD", name: "DJ1200", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/dj1200" },
+  { id: "lord-power-amplifiers-dj1600", brand: "LORD", name: "DJ1600", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/dj1600" },
+  { id: "lord-power-amplifiers-dj2500", brand: "LORD", name: "DJ2500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/dj2500" },
+  { id: "lord-power-amplifiers-dj3600", brand: "LORD", name: "DJ3600", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/dj3600" },
+  { id: "lord-power-amplifiers-dj4000", brand: "LORD", name: "DJ4000", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/dj4000" },
+  { id: "lord-power-amplifiers-hd5002", brand: "LORD", name: "HD5002", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/hd5002" },
+  { id: "lord-power-amplifiers-mt3500", brand: "LORD", name: "MT3500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/mt3500" },
+  { id: "lord-power-amplifiers-mt4500", brand: "LORD", name: "MT4500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/mt4500" },
+  { id: "lord-power-amplifiers-pbt501", brand: "LORD", name: "PBT501", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/pbt501" },
+  { id: "lord-power-amplifiers-pbt701", brand: "LORD", name: "PBT701", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/pbt701" },
+  { id: "lord-power-amplifiers-ssa350", brand: "LORD", name: "SSA350", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp, to: "/products/ssa350" },
+  { id: "lord-power-amplifiers-ssa6500", brand: "LORD", name: "SSA6500", subtitle: "Power Amplifiers", category: "power-amplifiers", image: IMG.paAmp2, to: "/products/ssa6500" },
   { id: "lord-two-zone-pa-amplifier-tza1200", brand: "LORD", name: "TZA1200", subtitle: "Two Zone PA Amplifiers", category: "pa-systems", image: IMG.paAmp2 },
   { id: "lord-two-zone-pa-amplifier-tza1500p", brand: "LORD", name: "TZA1500P", subtitle: "Two Zone PA Amplifiers", category: "pa-systems", image: IMG.paAmp },
   { id: "lord-two-zone-pa-amplifier-tza2500", brand: "LORD", name: "TZA2500", subtitle: "Two Zone PA Amplifiers", category: "pa-systems", image: IMG.paAmp2 },
@@ -686,7 +706,7 @@ export const ECOSYSTEM = [
 ];
 
 export const ABOUT_STATS = [
-  { icon: "calendar", value: "30+", label: "Years", sub: "of Audio Excellence" },
+  { icon: "calendar", value: `${YEARS_EXPERIENCE}+`, label: "Years", sub: "of Audio Excellence" },
   { icon: "box", value: "500+", label: "Products", sub: "Across Our Ecosystem" },
   { icon: "globe", value: "65+", label: "Countries", sub: "Global Presence" },
   { icon: "shield", value: "100%", label: "Quality Focus", sub: "Tested. Trusted. Delivered." },

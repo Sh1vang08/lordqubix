@@ -46,7 +46,9 @@ export default function App() {
             path="/products/power-amplifiers"
             element={<CategoryAmplifiers />}
           />
-          <Route path="/products/qx-series" element={<ProductDetail />} />
+          {/* Every model resolves from the catalogue, so all 169 products
+              have a real page rather than sharing one hardcoded example. */}
+          <Route path="/products/:slug" element={<ProductDetail />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<Navigate to="/" replace />} />

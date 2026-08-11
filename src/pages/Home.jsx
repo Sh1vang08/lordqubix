@@ -9,14 +9,23 @@ import { QubixMark, LordMark } from "../components/Logo";
 import {
   HERO_SLIDES,
   STATS,
-  CATEGORIES,
-  FEATURED,
   SOLUTIONS,
   WHY_QUBIX,
   BG,
   whatsappLink,
 } from "../data/site";
 import { url as catUrl } from "../data/catalogue";
+import {
+  CATEGORIES as CAT_LIST,
+  PRODUCTS as ALL_PRODUCTS,
+  productImage,
+} from "../data/products";
+
+/** The models the live site leads with, in the same order. */
+const TOP_PICK_SLUGS = ["qx-4500", "qx-3500", "qx-2000", "qx-4800"];
+const TOP_PICKS = TOP_PICK_SLUGS.map((s) =>
+  ALL_PRODUCTS.find((p) => p.slug === s)
+).filter(Boolean);
 import {
   useGsap,
   revealOnScroll,
@@ -26,7 +35,6 @@ import {
   scrubWords,
   scrimReveal,
   trackIn,
-  scrollMarquee,
   magnetic,
   hoverLift,
   drift,
@@ -244,9 +252,22 @@ export default function Home() {
                 <em>{active.titleAccent}</em>
               </h1>
               <p>{active.copy}</p>
+
+              {/* Headline figures for a slide that features a real model. */}
+              {active.badges && (
+                <ul className="hero__specs">
+                  {active.badges.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              )}
+
               <div className="hero__actions">
-                <Link className="btn btn--primary btn--lg" to="/products">
-                  Explore Products
+                <Link
+                  className="btn btn--primary btn--lg"
+                  to={active.product ? `/products/${active.product}` : "/products"}
+                >
+                  {active.product ? "View This Model" : "Explore Products"}
                   <Icon name="chevron" size={14} />
                 </Link>
                 <a
@@ -268,9 +289,11 @@ export default function Home() {
               {HERO_SLIDES.map((s, i) => (
                 <img
                   key={s.titleAccent}
-                  src={s.image}
+                  src={s.product ? productImage(s.product) : s.image}
                   alt={i === slide ? `${s.titleTop} ${s.titleAccent}` : ""}
-                  className={`hero__product ${i === slide ? "is-active" : ""}`}
+                  className={`hero__product ${
+                    i === slide ? "is-active" : ""
+                  } ${s.product ? "hero__product--plate" : ""}`}
                   aria-hidden={i !== slide}
                   loading={i === 0 ? "eager" : "lazy"}
                 />
@@ -326,32 +349,63 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="cat-grid">
-              {CATEGORIES.map((c) => (
-                <Link
-                  className="cat-card"
-                  key={c.slug}
-                  to={
-                    c.slug === "power-amplifiers"
-                      ? "/products/power-amplifiers"
-                      : "/products"
-                  }
-                >
-                  <div className="cat-card__media">
-                    <img src={c.image} alt={c.name} loading="lazy" />
-                  </div>
-                  <div className="cat-card__body">
-                    <div>
-                      <h3>{c.name}</h3>
-                      <p>{c.blurb}</p>
-                    </div>
-                    <span className="cat-card__go" aria-hidden="true">
-                      <Icon name="arrow" size={16} />
-                    </span>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {/* Browse by brand, then by the real sub-categories underneath —
+                the shortest path from "I need a mixer" to the right models.
+                Each category is its own card led by a real model, so the
+                section scans visually rather than reading as a list. */}
+            {["Qubix", "Lord"].map((brand) => (
+              <div className="collection" key={brand}>
+                <div className="collection__head">
+                  <h3>
+                    {brand}
+                    <em>
+                      {CAT_LIST.filter((c) => c.brand === brand).length}{" "}
+                      categories
+                    </em>
+                  </h3>
+                  <Link
+                    className="collection__all"
+                    to={`/products?brand=${brand}`}
+                  >
+                    View all <Icon name="chevron" size={12} />
+                  </Link>
+                </div>
+
+                <div className="ccards">
+                  {CAT_LIST.filter((c) => c.brand === brand).map((c) => {
+                    const sample = ALL_PRODUCTS.find(
+                      (p) => p.categorySlug === c.slug
+                    );
+                    return (
+                      <Link
+                        className="ccard"
+                        key={c.slug}
+                        to={`/products?category=${c.slug}`}
+                      >
+                        <div className="ccard__media">
+                          {sample && (
+                            <img
+                              src={productImage(sample.slug)}
+                              alt=""
+                              loading="lazy"
+                            />
+                          )}
+                        </div>
+                        <div className="ccard__body">
+                          <h4>{c.label}</h4>
+                          <p>
+                            {c.count} {c.count === 1 ? "model" : "models"}
+                          </p>
+                        </div>
+                        <span className="ccard__go" aria-hidden="true">
+                          <Icon name="arrow" size={15} />
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -368,17 +422,28 @@ export default function Home() {
               </Link>
             </div>
 
+            {/* Real catalogue models, so every card leads to a real page with
+                the manufacturer's own specifications. */}
             <div className="feat-grid">
-              {FEATURED.map((f) => (
-                <article className="feat-card" key={f.name}>
-                  <div className="feat-card__media">
-                    <img src={f.image} alt={f.name} loading="lazy" />
+              {TOP_PICKS.map((f) => (
+                <article className="feat-card" key={f.slug}>
+                  <div className="feat-card__media feat-card__media--plate">
+                    <img
+                      src={productImage(f.slug)}
+                      alt={f.name}
+                      loading="lazy"
+                      width="900"
+                      height="900"
+                    />
                   </div>
-                  <p className="feat-card__series">{f.series}</p>
+                  <p className="feat-card__series">{f.category}</p>
                   <h3>{f.name}</h3>
-                  <p className="feat-card__sub">{f.subtitle}</p>
-                  <p className="feat-card__copy">{f.copy}</p>
-                  <Link className="btn btn--primary btn--sm btn--block" to={f.to}>
+                  <p className="feat-card__sub">{f.summary}</p>
+                  <p className="feat-card__copy">{f.tagline}</p>
+                  <Link
+                    className="btn btn--primary btn--sm btn--block"
+                    to={`/products/${f.slug}`}
+                  >
                     View Details
                     <Icon name="arrow" size={14} />
                   </Link>
