@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Icon from "../components/Icon";
 import {
   CONTACT,
+  CONTACT_PEOPLE,
   INTEREST_CARDS,
   ENQUIRY_STEPS,
   FAQS,
@@ -154,17 +155,24 @@ export default function Contact() {
             </a>
 
             <ul className="ct-panel__list">
-              <li>
-                <Icon name="phone" size={18} />
-                <div>
-                  <strong>{CONTACT.phone}</strong>
-                  <span>{CONTACT.hours}</span>
-                </div>
-              </li>
+              {/* Both published lines, each named as on the live site. */}
+              {CONTACT_PEOPLE.map((p) => (
+                <li key={p.phone}>
+                  <Icon name="phone" size={18} />
+                  <div>
+                    <strong>
+                      <a href={`tel:${p.phone.replace(/\s/g, "")}`}>{p.phone}</a>
+                    </strong>
+                    <span>{p.name}</span>
+                  </div>
+                </li>
+              ))}
               <li>
                 <Icon name="mail" size={18} />
                 <div>
-                  <strong>{CONTACT.email}</strong>
+                  <strong>
+                    <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+                  </strong>
                   <span>We reply within 2 business hours</span>
                 </div>
               </li>
@@ -394,7 +402,9 @@ export default function Contact() {
               <ul>
                 <li>
                   <Icon name="phone" size={17} />
-                  <span>{CONTACT.phone}</span>
+                  <span>
+                    {CONTACT.phone}, {CONTACT.phoneAlt}
+                  </span>
                 </li>
                 <li>
                   <Icon name="mail" size={17} />

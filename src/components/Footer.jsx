@@ -62,8 +62,20 @@ export default function Footer({ tone = "dark", columns, blurb }) {
               <span>WhatsApp: {CONTACT.phone}</span>
             </li>
             <li>
+              <Icon name="phone" size={15} />
+              <span>
+                <a href={`tel:${CONTACT.phone.replace(/\s/g, "")}`}>
+                  {CONTACT.phone}
+                </a>
+                {", "}
+                <a href={`tel:${CONTACT.phoneAlt.replace(/\s/g, "")}`}>
+                  {CONTACT.phoneAlt}
+                </a>
+              </span>
+            </li>
+            <li>
               <Icon name="mail" size={15} />
-              <span>{CONTACT.emailAlt}</span>
+              <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
             </li>
             <li>
               <Icon name="pin" size={15} />

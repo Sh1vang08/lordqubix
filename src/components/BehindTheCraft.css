@@ -27,16 +27,26 @@
   text-transform: none;
 }
 
+/* Anton runs tall and the display leading is very tight, so the heading's
+   line box crops the glyph tops. Room here, not on the accent word alone,
+   since "Behind the" is clipped by the same box. */
+.craft__title {
+  line-height: 1.18;
+  padding-block: 0.06em 0.12em;
+}
+
 /* The accent word is italic gold, matching the reference lockup.
    `background-clip: text` paints only inside the element's own box, and the
    italic slant pushes the last glyph past that edge — which sheared the "t"
-   off "Craft". Padding widens the paint box and the matching negative margin
-   keeps the word optically centred against the heading. */
+   off "Craft". Padding widens the paint box on every side (the inline-block
+   also crops the italic vertically) and the negative margins keep the word
+   optically placed against the heading. */
 .craft__title em {
   font-style: italic;
   display: inline-block;
-  padding-right: 0.14em;
+  padding: 0.08em 0.14em 0.1em 0.02em;
   margin-right: -0.06em;
+  margin-block: -0.08em -0.1em;
   background: linear-gradient(96deg, var(--gold-300), var(--gold-400) 55%, var(--gold-200));
   -webkit-background-clip: text;
   background-clip: text;

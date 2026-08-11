@@ -86,12 +86,9 @@ export default function Home() {
         duration: DUR.fast,
         stagger: 0.09,
       }, "-=0.4")
-      .from(q(".hero__product.is-active"), {
-        opacity: 0,
-        y: 40,
-        scale: 0.94,
-        duration: DUR.slow,
-      }, "-=0.75")
+      // The hero artwork animates itself in CSS (see .hero__product), since
+      // it is remounted on every slide change and a GSAP tween would leave
+      // inline styles on a node the next slide replaces.
       .from(q(".hero__dots button"), {
         opacity: 0,
         scaleX: 0.3,
@@ -286,18 +283,34 @@ export default function Home() {
               {/* Warm plate behind the product so a dark rack unit still
                   separates from the near-black stage behind it. */}
               <span className="hero__halo" aria-hidden="true" />
-              {HERO_SLIDES.map((s, i) => (
-                <img
-                  key={s.titleAccent}
-                  src={s.product ? productImage(s.product) : s.image}
-                  alt={i === slide ? `${s.titleTop} ${s.titleAccent}` : ""}
-                  className={`hero__product ${
-                    i === slide ? "is-active" : ""
-                  } ${s.product ? "hero__product--plate" : ""}`}
-                  aria-hidden={i !== slide}
-                  loading={i === 0 ? "eager" : "lazy"}
-                />
-              ))}
+              {/* Only the current slide's artwork is in the DOM. Stacking all
+                  three in one grid cell and hiding the inactive ones let a
+                  previous product ghost through behind the current one — two
+                  overlapping chassis read as a blurred, broken image. */}
+              <img
+                key={active.titleAccent}
+                src={active.product ? productImage(active.product) : active.image}
+                alt={`${active.titleTop} ${active.titleAccent}`}
+                className={`hero__product is-active ${
+                  active.product ? "hero__product--plate" : ""
+                }`}
+                fetchPriority="high"
+              />
+
+              {/* Warm the other slides' artwork so the swap is instant. Kept
+                  out of the layout entirely rather than hidden in place. */}
+              <div className="hero__preload" aria-hidden="true">
+                {HERO_SLIDES.map((s, i) =>
+                  i === slide ? null : (
+                    <img
+                      key={s.titleAccent}
+                      src={s.product ? productImage(s.product) : s.image}
+                      alt=""
+                      loading="lazy"
+                    />
+                  )
+                )}
+              </div>
             </div>
           </div>
 
