@@ -34,39 +34,49 @@ export default function BehindTheCraft() {
   const barRef = useRef(null);
   const videoRefs = useRef([]);
 
+  const [onScreen, setOnScreen] = useState(false);
+
+  /**
+   * Watch the section's position so the clips are fetched only when they are
+   * about to be seen, and so rotation stops while the reel is off screen.
+   *
+   * Deliberately not disconnecting inside the callback: React StrictMode
+   * mounts effects twice, and a self-disconnecting observer could be torn
+   * down before it ever reported, leaving every clip without a src. A plain
+   * scroll listener backs it up, so the reel can never end up permanently
+   * stuck on its posters.
+   */
   useEffect(() => {
     const el = scope.current;
     if (!el) return undefined;
-    if (typeof IntersectionObserver === "undefined") {
-      setInView(true);
-      return undefined;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "400px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
 
-  // Auto-advance only while the reel is on screen. Off-screen rotation was
-  // pulling in every clip in the background for a section nobody was looking
-  // at, which is what made the whole page feel slow.
-  const [onScreen, setOnScreen] = useState(false);
-  useEffect(() => {
-    const el = scope.current;
-    if (!el || typeof IntersectionObserver === "undefined") return undefined;
-    const io = new IntersectionObserver(
-      ([entry]) => setOnScreen(entry.isIntersecting),
-      { threshold: 0.25 }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    const measure = () => {
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight || 0;
+      // Fetch once the section is within a screen of the viewport…
+      if (r.top < vh * 2 && r.bottom > -vh) setInView(true);
+      // …but only rotate while it is actually visible.
+      setOnScreen(r.top < vh * 0.9 && r.bottom > vh * 0.1);
+    };
+
+    measure();
+    window.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("resize", measure);
+
+    let io;
+    if (typeof IntersectionObserver !== "undefined") {
+      io = new IntersectionObserver(
+        (entries) => entries.forEach(() => measure()),
+        { rootMargin: "600px", threshold: [0, 0.25] }
+      );
+      io.observe(el);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+      if (io) io.disconnect();
+    };
   }, []);
 
   // Play only the active clip; everything else rewinds and pauses so a
