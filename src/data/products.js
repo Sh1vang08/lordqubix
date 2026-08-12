@@ -4,12 +4,24 @@
 // the source; products the manufacturer publishes no table for carry
 // an empty `specs` array rather than invented figures.
 
-/** Product image, served from /public/products-cut.
- *  These are the catalogue photographs with the white studio background
- *  removed and cropped to the product, so a unit sits on the site's dark
- *  surfaces without a white box around it. */
+/** Product image, served from /public/products.
+ *
+ *  Supplied as transparent PNGs: one clean view per product, with the
+ *  catalogue's composite second view, model-name plate and underline removed.
+ *  Trimmed to the product and encoded as WebP, so a unit drops straight onto
+ *  the site's dark surfaces with no plate behind it. */
 export const productImage = (slug) =>
-  `${import.meta.env.BASE_URL}products-cut/${slug}.webp`;
+  `${import.meta.env.BASE_URL}products/${slug}.webp`;
+
+/**
+ * Smaller copy for grids, where a card shows the product at ~250px.
+ *
+ * Losslessly encoded like the full-size version — identical pixels, just
+ * fewer of them. The listing renders 169 products at once, so serving the
+ * full-resolution file to every card made the page very heavy.
+ */
+export const productThumb = (slug) =>
+  `${import.meta.env.BASE_URL}products-thumb/${slug}.webp`;
 
 export const BRANDS = ["Qubix", "Lord"];
 

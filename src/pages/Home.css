@@ -127,7 +127,10 @@
   grid-area: 1 / 1;
   width: 100%;
   max-width: 640px;
-  aspect-ratio: 3 / 1;
+  /* Fixed box: the slides have different source ratios, and letting the image
+     size itself made the hero grow and shrink on every rotation, which
+     resized the document and shifted the page under the visitor. */
+  aspect-ratio: 16 / 9;
   object-fit: contain;
   object-position: center;
   /* One soft contact shadow, nothing else. Stacked glow/brightness filters
@@ -923,11 +926,12 @@
 /* Featured catalogue model. The artwork is a transparent cut-out cropped to
    the unit, so it needs no plate — but it is a wide, mostly-dark chassis, so
    it gets a brighter rim than the stock hero art to stay legible. */
-/* Featured catalogue model. A single soft contact shadow only — glow layers
-   trace the alpha edge of every grille hole and make the unit look blurred. */
+/* Featured catalogue model. The photography is supplied on white, so it sits
+   on a light card rather than being keyed out — automated background removal
+   left grey wedges where a photo's studio shadow faded away. */
 .hero__product--plate {
   max-width: 560px;
-  filter: drop-shadow(0 24px 40px rgba(0, 0, 0, 0.8));
+  filter: drop-shadow(0 22px 38px rgba(0, 0, 0, 0.7));
 }
 
 @media (max-width: 900px) {
@@ -939,7 +943,7 @@
     max-width: 100%;
     /* Keep the reserved aspect box — `height: auto` here let the differing
        slide ratios resize the hero again on every rotation. */
-    aspect-ratio: 3 / 1;
+    aspect-ratio: 16 / 9;
   }
 
   /* Keep the artwork inside the page gutter rather than bleeding to the

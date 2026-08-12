@@ -11,3 +11,8 @@ dist-ssr
 .idea
 *.log
 npm-debug.log*
+
+# Image source drops. The processed images the site serves live in
+# public/products and public/products-thumb; these are the raw inputs.
+*.zip
+/assets/

@@ -23,7 +23,7 @@ import {
   EASE,
   DUR,
 } from "../anim/useAnim";
-import { PRODUCTS, productImage } from "../data/products";
+import { PRODUCTS, productThumb } from "../data/products";
 import "./CategoryAmplifiers.css";
 
 const RELATED = [
@@ -257,7 +257,7 @@ export default function CategoryAmplifiers() {
                 <Link className="pcard" key={p.slug} to={`/products/${p.slug}`}>
                   <div className="pcard__media">
                     <img
-                      src={productImage(p.slug)}
+                      src={productThumb(p.slug)}
                       alt={p.name}
                       loading="lazy"
                       width="900"

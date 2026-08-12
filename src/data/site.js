@@ -124,7 +124,7 @@ export const NAV = [
 export const HERO_SLIDES = [
   {
     titleTop: "TD-9000",
-    titleAccent: "Class D Power",
+    titleAccent: "Class TD Power",
     copy: "5200W per channel at 2Ω with a damping factor of 2500. D/HD Class output, twin-fan cooling and full overload protection in a 3U chassis.",
     product: "td-9000",
     badges: ["5200W × 2 @ 2Ω", "Damping 2500", "3U · 42 Kg"],
@@ -539,8 +539,10 @@ export const AMP_SERIES = [
   {
     key: "td",
     name: "TD SERIES",
-    tag: "Class D Technology",
-    blurb: "Lightweight Class D power with superior efficiency.",
+    // "Class TD" is the range's own branding — it is printed on the front
+    // panel of every TD unit.
+    tag: "Class TD Technology",
+    blurb: "Lightweight Class TD power with superior efficiency.",
     accent: "var(--gold-500)",
     thumb: IMG.td2004,
     models: [

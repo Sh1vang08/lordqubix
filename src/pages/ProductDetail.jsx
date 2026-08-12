@@ -8,6 +8,7 @@ import {
   CATEGORIES,
   productBySlug,
   productImage,
+  productThumb,
 } from "../data/products";
 import { useGsap, revealOnScroll, gsap, EASE, DUR } from "../anim/useAnim";
 import "./ProductDetail.css";
@@ -202,7 +203,7 @@ export default function ProductDetail() {
                     <Link to={`/products/${r.slug}`}>
                       <div className="pd__related-media">
                         <img
-                          src={productImage(r.slug)}
+                          src={productThumb(r.slug)}
                           alt={r.name}
                           loading="lazy"
                           width="900"

@@ -20,6 +20,7 @@ import {
   CATEGORIES as CAT_LIST,
   PRODUCTS as ALL_PRODUCTS,
   productImage,
+  productThumb,
 } from "../data/products";
 
 /** The models the live site leads with, in the same order. */
@@ -399,7 +400,7 @@ export default function Home() {
                         <div className="ccard__media">
                           {sample && (
                             <img
-                              src={productImage(sample.slug)}
+                              src={productThumb(sample.slug)}
                               alt=""
                               loading="lazy"
                             />
@@ -443,7 +444,7 @@ export default function Home() {
                 <article className="feat-card" key={f.slug}>
                   <div className="feat-card__media feat-card__media--plate">
                     <img
-                      src={productImage(f.slug)}
+                      src={productThumb(f.slug)}
                       alt={f.name}
                       loading="lazy"
                       width="900"

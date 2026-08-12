@@ -4,12 +4,22 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Icon from "../components/Icon";
 import { BG, whatsappLink } from "../data/site";
-import { PRODUCTS, CATEGORIES, productImage } from "../data/products";
+import { PRODUCTS, CATEGORIES, productThumb } from "../data/products";
 import { useGsap, parallax, gsap, trigger, EASE, DUR } from "../anim/useAnim";
 import { prefersReducedMotion } from "../anim/gsap";
 import "./Products.css";
 
 const BRANDS = ["All", "Lord", "Qubix"];
+
+/**
+ * Orders model names the way the range is actually numbered.
+ *
+ * A plain string sort compares digit by digit, so QX-10000 lands before
+ * QX-2000 ("1" < "2") and a series reads out of order. Numeric collation
+ * compares runs of digits as numbers: QX-2000 → QX-3500 → … → QX-16000.
+ */
+const byModel = (a, b) =>
+  a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
 
 /**
  * All 169 models on one page.
@@ -42,8 +52,8 @@ export default function Products() {
         p.brand.toLowerCase().includes(q)
       );
     });
-    if (sort === "az") out.sort((a, b) => a.name.localeCompare(b.name));
-    if (sort === "za") out.sort((a, b) => b.name.localeCompare(a.name));
+    if (sort === "az") out.sort((a, b) => byModel(a.name, b.name));
+    if (sort === "za") out.sort((a, b) => byModel(b.name, a.name));
     return out;
   }, [query, brand, category, sort]);
 
@@ -219,7 +229,7 @@ export default function Products() {
                 >
                   <div className="pcard__media">
                     <img
-                      src={productImage(p.slug)}
+                      src={productThumb(p.slug)}
                       alt={p.name}
                       loading="lazy"
                       width="900"
