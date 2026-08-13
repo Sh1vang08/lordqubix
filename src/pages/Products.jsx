@@ -4,7 +4,14 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Icon from "../components/Icon";
 import { BG, whatsappLink } from "../data/site";
-import { PRODUCTS, CATEGORIES, productThumb } from "../data/products";
+import {
+  PRODUCTS,
+  CATEGORIES,
+  FAMILIES,
+  sizeInches,
+  sizesIn,
+  productThumb,
+} from "../data/products";
 import { useGsap, parallax, gsap, trigger, EASE, DUR } from "../anim/useAnim";
 import { prefersReducedMotion } from "../anim/gsap";
 import "./Products.css";
@@ -36,14 +43,48 @@ export default function Products() {
   const [params] = useSearchParams();
   const [query, setQuery] = useState(params.get("q") || "");
   const [brand, setBrand] = useState(params.get("brand") || "All");
+  const [family, setFamily] = useState(params.get("family") || null);
   const [category, setCategory] = useState(params.get("category") || null);
+  const [size, setSize] = useState(
+    params.get("size") ? Number(params.get("size")) : null
+  );
   const [sort, setSort] = useState("az");
+
+  const activeFamily = FAMILIES.find((f) => f.slug === family);
+
+  // Each control counts against the set the ones before it produced, so the
+  // numbers on the buttons always match what a click will actually show.
+  const inBrand = useMemo(
+    () => (brand === "All" ? PRODUCTS : PRODUCTS.filter((p) => p.brand === brand)),
+    [brand]
+  );
+
+  const inFamily = useMemo(
+    () =>
+      activeFamily
+        ? inBrand.filter((p) => activeFamily.categories.includes(p.category))
+        : inBrand,
+    [inBrand, activeFamily]
+  );
+
+  const availableSizes = useMemo(() => sizesIn(inFamily), [inFamily]);
+
+  /** Categories inside the current family that actually have products. */
+  const familyCategories = useMemo(() => {
+    if (!activeFamily) return [];
+    return activeFamily.categories
+      .map((label) => {
+        const items = inFamily.filter((p) => p.category === label);
+        return { label, slug: items[0]?.categorySlug, n: items.length };
+      })
+      .filter((c) => c.n > 0 && c.slug);
+  }, [activeFamily, inFamily]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const out = PRODUCTS.filter((p) => {
-      if (brand !== "All" && p.brand !== brand) return false;
+    const out = inFamily.filter((p) => {
       if (category && p.categorySlug !== category) return false;
+      if (size && sizeInches(p) !== size) return false;
       if (!q) return true;
       return (
         p.name.toLowerCase().includes(q) ||
@@ -55,7 +96,7 @@ export default function Products() {
     if (sort === "az") out.sort((a, b) => byModel(a.name, b.name));
     if (sort === "za") out.sort((a, b) => byModel(b.name, a.name));
     return out;
-  }, [query, brand, category, sort]);
+  }, [inFamily, query, category, size, sort]);
 
   const activeCategory = CATEGORIES.find((c) => c.slug === category);
 
@@ -109,12 +150,14 @@ export default function Products() {
         clearProps: "opacity,transform",
       }
     );
-  }, [query, brand, category, sort]);
+  }, [query, brand, family, category, size, sort]);
 
   const reset = () => {
     setQuery("");
     setBrand("All");
+    setFamily(null);
     setCategory(null);
+    setSize(null);
   };
 
   return (
@@ -159,6 +202,47 @@ export default function Products() {
             )}
           </div>
 
+          {/* Step 1 — what kind of product. Six families instead of 24 flat
+              categories, so the range can be taken in at a glance. */}
+          <div className="pfam" role="tablist" aria-label="Product type">
+            <button
+              role="tab"
+              aria-selected={!family}
+              className={`pfam__btn ${!family ? "is-active" : ""}`}
+              onClick={() => {
+                setFamily(null);
+                setCategory(null);
+                setSize(null);
+              }}
+            >
+              <span>All Products</span>
+              <em>{PRODUCTS.length}</em>
+            </button>
+
+            {FAMILIES.map((f) => {
+              const n = inBrand.filter(
+                (p) => f.categories.includes(p.category)
+              ).length;
+              if (!n) return null;
+              return (
+                <button
+                  key={f.slug}
+                  role="tab"
+                  aria-selected={family === f.slug}
+                  className={`pfam__btn ${family === f.slug ? "is-active" : ""}`}
+                  onClick={() => {
+                    setFamily(f.slug);
+                    setCategory(null);
+                    setSize(null);
+                  }}
+                >
+                  <span>{f.label}</span>
+                  <em>{n}</em>
+                </button>
+              );
+            })}
+          </div>
+
           <div className="ptabs">
             <div className="ptabs__group" role="tablist" aria-label="Brand">
               {BRANDS.map((b) => (
@@ -196,8 +280,82 @@ export default function Products() {
             </div>
           </div>
 
+          {/* Step 2 — narrow within the family. Speakers narrow by driver
+              size, which is the first thing anyone asks for; everything else
+              narrows by its catalogue category. */}
+          {family && (
+            <div className="psub">
+              {availableSizes.length > 0 && (
+                <div className="psub__row">
+                  <span className="psub__label">Size</span>
+                  <button
+                    className={`psub__btn ${!size ? "is-active" : ""}`}
+                    onClick={() => setSize(null)}
+                  >
+                    Any
+                  </button>
+                  {availableSizes.map((n) => (
+                    <button
+                      key={n}
+                      className={`psub__btn ${size === n ? "is-active" : ""}`}
+                      onClick={() => setSize(size === n ? null : n)}
+                    >
+                      {n}&quot;
+                      <em>
+                        {inFamily.filter((p) => sizeInches(p) === n).length}
+                      </em>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {familyCategories.length > 1 && (
+                <div className="psub__row">
+                  <span className="psub__label">Range</span>
+                  <button
+                    className={`psub__btn ${!category ? "is-active" : ""}`}
+                    onClick={() => setCategory(null)}
+                  >
+                    All
+                  </button>
+                  {familyCategories.map((c) => (
+                    <button
+                      key={c.slug}
+                      className={`psub__btn ${
+                        category === c.slug ? "is-active" : ""
+                      }`}
+                      onClick={() =>
+                        setCategory(category === c.slug ? null : c.slug)
+                      }
+                    >
+                      {c.label}
+                      <em>{c.n}</em>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           <p className="pcount">
             Showing <strong>{filtered.length}</strong> products
+            {activeFamily && (
+              <button
+                className="pchip"
+                onClick={() => {
+                  setFamily(null);
+                  setCategory(null);
+                  setSize(null);
+                }}
+              >
+                {activeFamily.label} ✕
+              </button>
+            )}
+            {size && (
+              <button className="pchip" onClick={() => setSize(null)}>
+                {size}&quot; ✕
+              </button>
+            )}
             {activeCategory && (
               <button
                 className="pchip"

@@ -44,9 +44,6 @@
 .craft__title em {
   font-style: italic;
   display: inline-block;
-  padding: 0.08em 0.14em 0.1em 0.02em;
-  margin-right: -0.06em;
-  margin-block: -0.08em -0.1em;
   background: linear-gradient(96deg, var(--gold-300), var(--gold-400) 55%, var(--gold-200));
   -webkit-background-clip: text;
   background-clip: text;

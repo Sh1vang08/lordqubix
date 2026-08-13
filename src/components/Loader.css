@@ -1,0 +1,145 @@
+/* ==========================================================================
+   First-paint loader
+
+   Covers the moment between the shell mounting and the fold being ready.
+   Fixed and above everything, on the same near-black the site opens on, so
+   the hand-off to the real page is a fade rather than a flash.
+   ========================================================================== */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: radial-gradient(
+      120% 90% at 50% 40%,
+      rgba(200, 146, 42, 0.1) 0%,
+      transparent 62%
+    ),
+    var(--navy-950);
+  /* Fades in from the paint colour so there is no flash before it appears. */
+  animation: loaderIn 0.2s var(--ease) both;
+}
+
+@keyframes loaderIn {
+  from {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------- the mark */
+
+.loader__mark {
+  position: relative;
+  overflow: hidden;
+  padding: 4px 10px;
+  animation: loaderMark 0.7s var(--ease) both;
+}
+
+.loader__mark img {
+  display: block;
+  width: auto;
+}
+
+@keyframes loaderMark {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A gold sheen sweeps across the wordmark — the same brass the site uses,
+   and enough motion to show the page is working. */
+.loader__sheen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(233, 200, 130, 0.42) 50%,
+    transparent 100%
+  );
+  animation: loaderSheen 1.5s var(--ease) infinite;
+}
+
+@keyframes loaderSheen {
+  from {
+    left: -50%;
+  }
+  to {
+    left: 105%;
+  }
+}
+
+/* ---------------------------------------------------------------- the bar */
+
+.loader__bar {
+  position: relative;
+  width: 148px;
+  height: 2px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.loader__bar span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 40%;
+  border-radius: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--gold-400),
+    var(--gold-200)
+  );
+  animation: loaderBar 1.15s var(--ease) infinite;
+}
+
+@keyframes loaderBar {
+  from {
+    transform: translateX(-110%);
+  }
+  to {
+    transform: translateX(360%);
+  }
+}
+
+.loader__text {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--on-dark-dim);
+}
+
+/* Reduced motion: keep the brand mark, drop the sweeping animations. */
+@media (prefers-reduced-motion: reduce) {
+  .loader__mark,
+  .loader__sheen,
+  .loader__bar span {
+    animation: none;
+  }
+
+  .loader__sheen {
+    display: none;
+  }
+
+  .loader__bar span {
+    width: 100%;
+  }
+}

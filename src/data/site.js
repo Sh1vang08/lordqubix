@@ -281,6 +281,46 @@ export const SOLUTIONS = [
   },
 ];
 
+/**
+ * The reasons to buy, as the business itself states them. Figures are the
+ * real ones: 169 models in the catalogue, manufacturing since 1987, and the
+ * direct-to-customer WhatsApp channel the whole site is built around.
+ */
+export const USPS = [
+  {
+    n: "01",
+    icon: "shield",
+    title: "68-Hour Burn-In Testing",
+    copy: "Every unit runs thermal stress cycles and acoustic burn-in before it leaves the facility — so what arrives is what was tested.",
+    stat: "68",
+    statLabel: "hours tested",
+  },
+  {
+    n: "02",
+    icon: "whatsapp",
+    title: "Direct Manufacturer Pricing",
+    copy: "No middlemen and no dealer markup. You talk to the people who build the product, and the price reflects that.",
+    stat: "0",
+    statLabel: "middlemen",
+  },
+  {
+    n: "03",
+    icon: "gear",
+    title: "Built In-House Since 1987",
+    copy: "Design, tooling and assembly under one roof, from pioneering microphones to today's line arrays.",
+    stat: `${new Date().getFullYear() - 1987}`,
+    statLabel: "years building",
+  },
+  {
+    n: "04",
+    icon: "box",
+    title: "A Complete Range",
+    copy: "Amplifiers, consoles, speakers, drivers and wireless — specify an entire system from one catalogue.",
+    stat: "169",
+    statLabel: "models in stock",
+  },
+];
+
 export const WHY_QUBIX = [
   {
     icon: "diamond",

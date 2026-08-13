@@ -790,3 +790,39 @@ ul {
 }
 
 
+
+/* ==========================================================================
+   Italic accent words in headings
+
+   Anton is a tall, tight display face and the site's accent words are italic,
+   so the slant pushes glyphs past the element's own box. Where a heading also
+   uses `background-clip: text` the paint is clipped to that box and the
+   letters are visibly sheared — the "Craft" bug, which recurred in every new
+   section because each one restyled its own `em`.
+
+   Fixing it here, once, means any heading written as `<h2>Word <em>Accent</em></h2>`
+   is safe by default.
+   ========================================================================== */
+
+h1 em,
+h2 em,
+h3 em,
+.section-head h2 em,
+.rule-title h2 em {
+  /* Room for the slant on every side.
+     Deliberately NO negative margins: pulling the box back in placed the
+     italic's overhang outside the heading, and any ancestor with
+     `overflow: hidden` (the USP section clips its background glow) then
+     sheared the last letter off. Padding alone keeps the glyph inside every
+     box that might clip it. */
+  display: inline-block;
+  padding: 0.1em 0.18em 0.12em 0.04em;
+}
+
+/* Headings that carry an italic accent need a slightly looser line box than
+   the display default, or the glyph tops clip against the line above. */
+h1:has(em),
+h2:has(em),
+h3:has(em) {
+  line-height: 1.16;
+}

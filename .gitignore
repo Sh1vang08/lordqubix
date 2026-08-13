@@ -16,3 +16,7 @@ npm-debug.log*
 # public/products and public/products-thumb; these are the raw inputs.
 *.zip
 /assets/
+
+# Reference documents. The 2026 catalogue PDF is ~350MB of print artwork;
+# what the site needs from it lives in src/data/products.js.
+*.pdf

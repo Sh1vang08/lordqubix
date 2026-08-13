@@ -9,6 +9,7 @@ import {
   productBySlug,
   productImage,
   productThumb,
+  productEnquiry,
 } from "../data/products";
 import { useGsap, revealOnScroll, gsap, EASE, DUR } from "../anim/useAnim";
 import "./ProductDetail.css";
@@ -61,9 +62,11 @@ export default function ProductDetail() {
     (x) => x.categorySlug === p.categorySlug && x.slug !== p.slug
   ).slice(0, 8);
 
-  const enquiry = whatsappLink(
-    `Hello Qubix, I would like details and pricing for the ${p.name} (${p.summary}).`
-  );
+  // Name, range, headline specs and the product link — WhatsApp unfurls the
+  // link with the product photograph, so the enquiry is identifiable on
+  // arrival rather than "I want details about a product".
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
+  const enquiry = whatsappLink(productEnquiry(p, origin));
 
   return (
     <>
@@ -172,7 +175,17 @@ export default function ProductDetail() {
               <a
                 className="btn btn--whatsapp"
                 href={whatsappLink(
-                  `Hello Qubix, please send the specification sheet for the ${p.name}.`
+                  [
+                    "Hello Qubix, please send the specification sheet for:",
+                    "",
+                    `*${p.name}* (${p.brand})`,
+                    p.summary,
+                    origin && !/localhost|127\.|192\.168\./.test(origin)
+                      ? `\n${origin}/products/${p.slug}`
+                      : "",
+                  ]
+                    .filter((l) => l !== null)
+                    .join("\n")
                 )}
                 target="_blank"
                 rel="noreferrer"

@@ -2204,7 +2204,7 @@ export const PRODUCTS = [
     brand: "Lord",
     category: "Speaker",
     categorySlug: "speaker",
-    summary: "15 Inch Speaker",
+    summary: "18 Inch Speaker",
     tagline: "Super high power speaker",
     features: ["Iron Frame", "3 Out Voice Coil"],
     specs: [
@@ -2221,7 +2221,7 @@ export const PRODUCTS = [
     brand: "Lord",
     category: "Speaker",
     categorySlug: "speaker",
-    summary: "15 Inch Speaker",
+    summary: "18 Inch Speaker",
     tagline: "Super high power speaker",
     features: ["Aluminium Frame", "3 Out Voice Coil"],
     specs: [
@@ -2238,7 +2238,7 @@ export const PRODUCTS = [
     brand: "Lord",
     category: "Speaker",
     categorySlug: "speaker",
-    summary: "15 Inch Speaker",
+    summary: "18 Inch Speaker",
     tagline: "Super high power speaker",
     features: ["Aluminium Frame", "3 Out Voice Coil"],
     specs: [
@@ -2255,7 +2255,7 @@ export const PRODUCTS = [
     brand: "Lord",
     category: "Speaker",
     categorySlug: "speaker",
-    summary: "15 Inch Speaker",
+    summary: "18 Inch Speaker",
     tagline: "Super high power speaker",
     features: ["Aluminium Frame", "3 Out Voice Coil"],
     specs: [
@@ -2272,7 +2272,7 @@ export const PRODUCTS = [
     brand: "Lord",
     category: "Speaker",
     categorySlug: "speaker",
-    summary: "15 Inch Speaker",
+    summary: "18 Inch Speaker",
     tagline: "Super high power speaker",
     features: ["Aluminium Frame", "3 Out Voice Coil"],
     specs: [
@@ -2341,3 +2341,165 @@ export const productBySlug = (slug) =>
 
 export const productsInCategory = (categorySlug) =>
   PRODUCTS.filter((p) => p.categorySlug === categorySlug);
+
+/* ------------------------------------------------------- browse structure */
+
+/**
+ * Top-level families.
+ *
+ * The catalogue has 24 categories, which is too many to scan: a visitor
+ * looking for a 15" speaker had to know it lived under Lord → Speaker and
+ * then read 28 model names. Families group those categories the way the
+ * printed catalogue and the sales team talk about the range.
+ */
+export const FAMILIES = [
+  {
+    slug: "amplifiers",
+    label: "Amplifiers",
+    blurb: "Power amplifiers and P.A. amplifiers",
+    categories: [
+      "QX Series",
+      "CA Series",
+      "MT Series",
+      "TD Series",
+      "Power Amplifiers",
+      "Two Zone P.A. Amplifier",
+      "P.A. Amplifier",
+    ],
+  },
+  {
+    slug: "mixers",
+    label: "Mixers & Consoles",
+    blurb: "Mixing consoles, DJ mixers and powered mixers",
+    categories: [
+      "MG Series",
+      "S & Zed Series",
+      "QAS Series",
+      "EFX & SQ Series",
+      "DJ Mixer",
+      "PA Audio Mixing Consoles",
+    ],
+  },
+  {
+    slug: "speakers",
+    label: "Speakers",
+    blurb: "Full range speakers, columns and crossovers",
+    categories: [
+      "Speaker",
+      "Full Range Super High Power Speaker",
+      "Crossover / P.A. Column",
+    ],
+  },
+  {
+    slug: "components",
+    label: "Drivers & Components",
+    blurb: "Compression drivers, diaphragms and connectors",
+    categories: [
+      "Compression Driver",
+      "Diaphragms",
+      "P.A. Driver Unit",
+      "Connector / Crossover / Line Array",
+    ],
+  },
+  {
+    slug: "microphones",
+    label: "Microphones & Wireless",
+    blurb: "Wired microphones and wireless systems",
+    categories: ["PA Microphone", "Wireless Communication"],
+  },
+  {
+    slug: "processing",
+    label: "Audio Processing",
+    blurb: "Equalisers, crossovers and processors",
+    categories: ["Audio Series Equipments"],
+  },
+];
+
+/** The family a product belongs to, or undefined if unclassified. */
+export const familyOf = (product) =>
+  FAMILIES.find((f) => f.categories.includes(product.category));
+
+/**
+ * Driver size in inches, for the speaker size filter.
+ *
+ * Taken from the product's own "Size/Net Wt." specification where the
+ * manufacturer publishes one; otherwise from the leading number of the model
+ * name (10LM50 → 10"), which is how the catalogue names its drivers.
+ * Anything that is not a driver returns null and is simply not offered as a
+ * size choice.
+ */
+/**
+ * Models the printed catalogue files under a size that contradicts their own
+ * model name. Page 30 of the 2026 catalogue is headed `18" Speakers` and
+ * lists 15 LM 01 through 15 LM 05, and those LORD spec tables carry no size
+ * row, so the heading is the only evidence there is. Verified against the
+ * page image rather than inferred.
+ */
+const SIZE_OVERRIDES = {
+  "15LM01": 18,
+  "15LM02": 18,
+  "15LM03": 18,
+  "15LM04": 18,
+  "15LM05": 18,
+};
+
+export const sizeInches = (product) => {
+  const key = product.name.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+  if (SIZE_OVERRIDES[key]) return SIZE_OVERRIDES[key];
+
+  // Qubix tables print the size outright; where they do, it is authoritative.
+  const spec = product.specs.find(([k]) => /size\s*\/?\s*net/i.test(k));
+  if (spec) {
+    const m = String(spec[1]).match(/(\d{1,2})\s*"/);
+    if (m) return Number(m[1]);
+  }
+
+  // Otherwise the leading number of the model name, which the catalogue's own
+  // Qubix pages confirm matches the printed size (15 QH 40 DM → 15"/14 KG).
+  const m = product.name.match(/^(\d{1,2})\s*"?\s*(?:LM|ND|PD|BH|QH|NDL)/i);
+  if (m) {
+    const n = Number(m[1]);
+    if ([8, 10, 12, 15, 18, 21].includes(n)) return n;
+  }
+  return null;
+};
+
+/** Sizes actually present in a set of products, ascending. */
+export const sizesIn = (products) =>
+  [...new Set(products.map(sizeInches).filter(Boolean))].sort((a, b) => a - b);
+
+/* ------------------------------------------------------------- enquiries */
+
+/**
+ * WhatsApp enquiry text for a specific model.
+ *
+ * A bare "I want details" message forces the sales team to ask which product
+ * every time. This states the model, its range and headline specifications,
+ * and links the product page — WhatsApp unfurls that link with the product
+ * photograph, so an enquiry arrives already identifiable.
+ *
+ * `origin` is supplied by the caller. A localhost origin is dropped, since
+ * that link would be unreachable for whoever receives the message.
+ */
+export const productEnquiry = (product, origin = "") => {
+  const lines = [
+    "Hello Qubix, I would like details and pricing for:",
+    "",
+    `*${product.name}* (${product.brand})`,
+    product.summary,
+  ];
+
+  const headline = product.specs.slice(0, 3);
+  if (headline.length) {
+    lines.push("");
+    headline.forEach(([k, v]) => lines.push(`• ${k}: ${v}`));
+  }
+
+  const isLocal = /localhost|127\.|192\.168\./.test(origin);
+  if (origin && !isLocal) {
+    lines.push("");
+    lines.push(`${origin}/products/${product.slug}`);
+  }
+
+  return lines.join("\n");
+};

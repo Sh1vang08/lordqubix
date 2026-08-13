@@ -11,17 +11,24 @@ import {
   STATS,
   SOLUTIONS,
   WHY_QUBIX,
+  USPS,
   BG,
   whatsappLink,
   SOCIAL,
 } from "../data/site";
 import { url as catUrl } from "../data/catalogue";
 import {
-  CATEGORIES as CAT_LIST,
   PRODUCTS as ALL_PRODUCTS,
+  FAMILIES,
+  sizeInches,
+  sizesIn,
   productImage,
   productThumb,
 } from "../data/products";
+
+/** Drivers, and the sizes actually stocked, for the shop-by-size shortcuts. */
+const SPEAKERS = ALL_PRODUCTS.filter((p) => /speaker/i.test(p.category));
+const SPEAKER_SIZES = sizesIn(SPEAKERS);
 
 /** The models the live site leads with, in the same order. */
 const TOP_PICK_SLUGS = ["qx-4500", "qx-3500", "qx-2000", "qx-4800"];
@@ -181,6 +188,17 @@ export default function Home() {
         scrollTrigger: trigger(half),
       });
     });
+
+    // USP cards: stagger in, draw their rule, and run the figure up.
+    const uspGrid = q(".usp__grid")[0];
+    if (uspGrid) {
+      revealOnScroll(q(".usp-card"), uspGrid, { each: 0.1, y: 40 });
+      q(".usp-card__line").forEach((el) => drawLine(el, { origin: "left center" }));
+      q(".usp-card__stat strong").forEach((el, i) =>
+        countUp(el, { triggerEl: uspGrid, delay: 0.2 + i * 0.1 })
+      );
+      q(".usp-card").forEach((c) => self.add(() => hoverLift(c, { y: -6 })));
+    }
 
     revealOnScroll(q(".wacta"), q(".why__cta")[0], { y: 30 });
   }, []);
@@ -364,63 +382,85 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* Browse by brand, then by the real sub-categories underneath —
-                the shortest path from "I need a mixer" to the right models.
-                Each category is its own card led by a real model, so the
-                section scans visually rather than reading as a list. */}
-            {["Qubix", "Lord"].map((brand) => (
-              <div className="collection" key={brand}>
-                <div className="collection__head">
-                  <h3>
-                    {brand}
-                    <em>
-                      {CAT_LIST.filter((c) => c.brand === brand).length}{" "}
-                      categories
-                    </em>
-                  </h3>
+            {/* Six families rather than 24 categories: a visitor picks the
+                kind of product first, which is how anyone actually shops for
+                audio gear. Each card is led by a real model from that family
+                so the section scans visually rather than reading as a list. */}
+            <div className="ccards">
+              {FAMILIES.map((f) => {
+                const items = ALL_PRODUCTS.filter((p) =>
+                  f.categories.includes(p.category)
+                );
+                if (!items.length) return null;
+                const sample = items[0];
+                return (
                   <Link
-                    className="collection__all"
-                    to={`/products?brand=${brand}`}
+                    className="ccard"
+                    key={f.slug}
+                    to={`/products?family=${f.slug}`}
                   >
-                    View all <Icon name="chevron" size={12} />
+                    <div className="ccard__media">
+                      <img
+                        src={productThumb(sample.slug)}
+                        alt=""
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="ccard__body">
+                      <h4>{f.label}</h4>
+                      <p>{f.blurb}</p>
+                      <span className="ccard__count">
+                        {items.length} models
+                      </span>
+                    </div>
+                    <span className="ccard__go" aria-hidden="true">
+                      <Icon name="arrow" size={15} />
+                    </span>
                   </Link>
-                </div>
+                );
+              })}
+            </div>
 
-                <div className="ccards">
-                  {CAT_LIST.filter((c) => c.brand === brand).map((c) => {
-                    const sample = ALL_PRODUCTS.find(
-                      (p) => p.categorySlug === c.slug
-                    );
-                    return (
-                      <Link
-                        className="ccard"
-                        key={c.slug}
-                        to={`/products?category=${c.slug}`}
-                      >
-                        <div className="ccard__media">
-                          {sample && (
-                            <img
-                              src={productThumb(sample.slug)}
-                              alt=""
-                              loading="lazy"
-                            />
-                          )}
-                        </div>
-                        <div className="ccard__body">
-                          <h4>{c.label}</h4>
-                          <p>
-                            {c.count} {c.count === 1 ? "model" : "models"}
-                          </p>
-                        </div>
-                        <span className="ccard__go" aria-hidden="true">
-                          <Icon name="arrow" size={15} />
-                        </span>
-                      </Link>
-                    );
-                  })}
-                </div>
+            {/* Speakers are the range people search by size, and "which inch
+                do I need" is the question the old navigation could not answer.
+                Each size shows a real driver from that size, so the choice is
+                visual rather than a row of numbers. */}
+            <div className="sizejump">
+              <div className="sizejump__head">
+                <p className="sizejump__label">Shop speakers by size</p>
+                <Link className="sizejump__all" to="/products?family=speakers">
+                  All speakers <Icon name="chevron" size={12} />
+                </Link>
               </div>
-            ))}
+
+              <div className="sizejump__row">
+                {SPEAKER_SIZES.map((n) => {
+                  const items = SPEAKERS.filter((p) => sizeInches(p) === n);
+                  const sample = items[0];
+                  return (
+                    <Link
+                      key={n}
+                      className="sizecard"
+                      to={`/products?family=speakers&size=${n}`}
+                    >
+                      <div className="sizecard__media">
+                        {sample && (
+                          <img
+                            src={productThumb(sample.slug)}
+                            alt=""
+                            loading="lazy"
+                          />
+                        )}
+                      </div>
+                      <strong>{n}&quot;</strong>
+                      <span>
+                        {items.length} {items.length === 1 ? "model" : "models"}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -487,6 +527,45 @@ export default function Home() {
                   </span>
                   <h3>{s.title}</h3>
                   <p>{s.copy}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* --------------------------------------------------------- usps */}
+        <section className="usp">
+          <span className="usp__glow" aria-hidden="true" />
+          <div className="shell">
+            <div className="section-head">
+              <div>
+                <p className="eyebrow">Why Qubix &amp; LORD</p>
+                <h2>
+                  Built to be <em>relied on</em>
+                </h2>
+              </div>
+            </div>
+
+            <div className="usp__grid">
+              {USPS.map((u) => (
+                <article className="usp-card" key={u.n}>
+                  <span className="usp-card__n" aria-hidden="true">
+                    {u.n}
+                  </span>
+
+                  <span className="usp-card__icon" aria-hidden="true">
+                    <Icon name={u.icon} size={22} />
+                  </span>
+
+                  <h3>{u.title}</h3>
+                  <p>{u.copy}</p>
+
+                  <p className="usp-card__stat">
+                    <strong>{u.stat}</strong>
+                    <span>{u.statLabel}</span>
+                  </p>
+
+                  <span className="usp-card__line" aria-hidden="true" />
                 </article>
               ))}
             </div>

@@ -4,6 +4,7 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import ScrollRail from "./components/ScrollRail";
 import MusicBar from "./components/MusicBar";
+import Loader from "./components/Loader";
 
 const Products = lazy(() => import("./pages/Products"));
 const CategoryAmplifiers = lazy(() => import("./pages/CategoryAmplifiers"));
@@ -34,6 +35,9 @@ export default function App() {
 
   return (
     <>
+      {/* Brand splash on first arrival only — see Loader for why it does not
+          repeat on every navigation. */}
+      <Loader />
       <ScrollManager />
       {/* Keyed on the route so the rail recalculates against each page's
           own height rather than carrying the previous page's measurement. */}

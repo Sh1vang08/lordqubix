@@ -531,8 +531,6 @@
 .pd__specs-head h2 em {
   font-style: italic;
   display: inline-block;
-  padding-right: 0.14em;
-  margin-right: -0.06em;
   color: var(--gold-400);
 }
 
@@ -608,8 +606,6 @@
 .pd__related-head h2 em {
   font-style: italic;
   display: inline-block;
-  padding-right: 0.14em;
-  margin-right: -0.06em;
   color: var(--gold-400);
 }
 
