@@ -21,17 +21,17 @@
       transparent 62%
     ),
     var(--navy-950);
-  /* Fades in from the paint colour so there is no flash before it appears. */
-  animation: loaderIn 0.2s var(--ease) both;
+  /* Transition, not an entrance animation: a `both`-filled keyframe would
+     hold opacity at its end value and the fade-out below could never win. */
+  opacity: 1;
+  transition: opacity 0.4s var(--ease);
 }
 
-@keyframes loaderIn {
-  from {
-    opacity: 0.85;
-  }
-  to {
-    opacity: 1;
-  }
+/* Applied for the last 400ms of the hold, so the page is revealed rather
+   than appearing abruptly. */
+.loader.is-leaving {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------- the mark */

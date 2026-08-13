@@ -35,8 +35,7 @@ export default function App() {
 
   return (
     <>
-      {/* Brand splash on first arrival only — see Loader for why it does not
-          repeat on every navigation. */}
+      {/* Brand splash, held on arrival and on every page change. */}
       <Loader />
       <ScrollManager />
       {/* Keyed on the route so the rail recalculates against each page's

@@ -1,80 +1,73 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { BrandLogo } from "./Logo";
 import "./Loader.css";
 
 /**
- * First-paint loading screen.
+ * Branded loading screen, shown on first arrival and on every page change.
  *
- * The home page pulls in hero artwork and the catalogue chunk, so there is a
- * moment where the shell is up but the fold is still assembling. This covers
- * that with the brand mark rather than a half-drawn page.
+ * It holds for a fixed HOLD_MS whether or not the page is ready, so the mark
+ * is always on screen long enough to read. Page assets keep loading behind
+ * it, so the wait is not wasted: by the time it lifts, most pages have
+ * finished assembling anyway.
  *
- * Shown once per session: a visitor moving between pages has already seen it,
- * and repeating it on every navigation would make the site feel slower, not
- * faster. It also self-dismisses on a timer so a stalled asset can never
- * leave someone staring at a splash screen.
+ * Visitors who ask for reduced motion skip it — for some people a forced
+ * full-screen delay with moving parts is not a nicety.
  */
-const SEEN_KEY = "qubix:loaded";
-const MIN_MS = 650; // long enough to read the mark, short enough not to annoy
-const MAX_MS = 3500; // hard ceiling — never trap the visitor behind the splash
+const HOLD_MS = 4000;
+
+const wantsReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const FADE_MS = 400;
 
 export default function Loader() {
-  const [done, setDone] = useState(() => {
-    if (typeof window === "undefined") return true;
-    try {
-      return window.sessionStorage.getItem(SEEN_KEY) === "1";
-    } catch {
-      // Private browsing can throw on storage access; showing the loader once
-      // is a better failure than crashing the page.
-      return false;
-    }
-  });
+  const { pathname } = useLocation();
+  const [visible, setVisible] = useState(() => !wantsReducedMotion());
+  const [leaving, setLeaving] = useState(false);
 
+  // Re-arm on every navigation. Keyed on pathname, so a route change puts the
+  // loader back up and starts the hold again.
   useEffect(() => {
-    if (done) return undefined;
-
-    const finish = () => {
-      setDone(true);
-      try {
-        window.sessionStorage.setItem(SEEN_KEY, "1");
-      } catch {
-        /* storage unavailable — the loader simply shows again next time */
-      }
-    };
-
-    const started = performance.now();
-    const settle = () => {
-      const waited = performance.now() - started;
-      const id = setTimeout(finish, Math.max(0, MIN_MS - waited));
-      return () => clearTimeout(id);
-    };
-
-    // Dismiss once the page has actually finished loading…
-    let cancelSettle;
-    const onLoad = () => {
-      cancelSettle = settle();
-    };
-
-    if (document.readyState === "complete") {
-      cancelSettle = settle();
-    } else {
-      window.addEventListener("load", onLoad, { once: true });
+    if (wantsReducedMotion()) {
+      setVisible(false);
+      return undefined;
     }
 
-    // …and regardless, after the ceiling.
-    const hard = setTimeout(finish, MAX_MS);
+    setLeaving(false);
+    setVisible(true);
+
+    // Fade out at the end of the hold rather than cutting, so the page is
+    // revealed instead of appearing abruptly.
+    const startFade = setTimeout(() => setLeaving(true), HOLD_MS - FADE_MS);
+    const hide = setTimeout(() => setVisible(false), HOLD_MS);
 
     return () => {
-      clearTimeout(hard);
-      window.removeEventListener("load", onLoad);
-      if (cancelSettle) cancelSettle();
+      clearTimeout(startFade);
+      clearTimeout(hide);
     };
-  }, [done]);
+  }, [pathname]);
 
-  if (done) return null;
+  // While the loader covers the page, stop the body scrolling underneath —
+  // otherwise a visitor can scroll a page they cannot see.
+  useEffect(() => {
+    if (!visible) return undefined;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, [visible]);
+
+  if (!visible) return null;
 
   return (
-    <div className="loader" role="status" aria-live="polite">
+    <div
+      className={`loader ${leaving ? "is-leaving" : ""}`}
+      role="status"
+      aria-live="polite"
+    >
       <div className="loader__mark">
         <BrandLogo height={44} />
         <span className="loader__sheen" aria-hidden="true" />
