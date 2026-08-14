@@ -6,21 +6,17 @@ import "./Loader.css";
 /**
  * Branded loading screen, shown on first arrival and on every page change.
  *
- * It holds for a fixed HOLD_MS whether or not the page is ready, so the mark
- * is always on screen long enough to read. Page assets keep loading behind
- * it, so the wait is not wasted: by the time it lifts, most pages have
- * finished assembling anyway.
- *
- * Visitors who ask for reduced motion skip it — for some people a forced
- * full-screen delay with moving parts is not a nicety.
+ * It lifts as soon as the page is ready rather than sitting for a set time —
+ * a brief cover for the assembling page, not a pause in front of it. The
+ * short floor below only stops it flashing on and off within a frame or two
+ * on a fast connection.
  */
-const HOLD_MS = 4000;
+const MIN_MS = 450;
+const FADE_MS = 400;
 
 const wantsReducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-const FADE_MS = 400;
 
 export default function Loader() {
   const { pathname } = useLocation();
@@ -28,7 +24,7 @@ export default function Loader() {
   const [leaving, setLeaving] = useState(false);
 
   // Re-arm on every navigation. Keyed on pathname, so a route change puts the
-  // loader back up and starts the hold again.
+  // loader back up while the next page mounts.
   useEffect(() => {
     if (wantsReducedMotion()) {
       setVisible(false);
@@ -38,10 +34,10 @@ export default function Loader() {
     setLeaving(false);
     setVisible(true);
 
-    // Fade out at the end of the hold rather than cutting, so the page is
-    // revealed instead of appearing abruptly.
-    const startFade = setTimeout(() => setLeaving(true), HOLD_MS - FADE_MS);
-    const hide = setTimeout(() => setVisible(false), HOLD_MS);
+    // Fade out rather than cutting, so the page is revealed instead of
+    // appearing abruptly.
+    const startFade = setTimeout(() => setLeaving(true), MIN_MS);
+    const hide = setTimeout(() => setVisible(false), MIN_MS + FADE_MS);
 
     return () => {
       clearTimeout(startFade);

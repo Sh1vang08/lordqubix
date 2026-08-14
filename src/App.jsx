@@ -35,7 +35,7 @@ export default function App() {
 
   return (
     <>
-      {/* Brand splash, held on arrival and on every page change. */}
+      {/* Brand splash, covering the mount on arrival and on every page change. */}
       <Loader />
       <ScrollManager />
       {/* Keyed on the route so the rail recalculates against each page's

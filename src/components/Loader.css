@@ -27,8 +27,8 @@
   transition: opacity 0.4s var(--ease);
 }
 
-/* Applied for the last 400ms of the hold, so the page is revealed rather
-   than appearing abruptly. */
+/* Applied once the page is ready, so it is revealed rather than appearing
+   abruptly. */
 .loader.is-leaving {
   opacity: 0;
   pointer-events: none;
