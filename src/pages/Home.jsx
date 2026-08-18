@@ -24,6 +24,7 @@ import {
   sizesIn,
   productImage,
   productThumb,
+  productEnquiry,
 } from "../data/products";
 
 /** Drivers, and the sizes actually stocked, for the shop-by-size shortcuts. */
@@ -236,6 +237,17 @@ export default function Home() {
 
   const active = HERO_SLIDES[slide];
 
+  // The hero features a real model, so its enquiry carries that product's
+  // name, specs and link rather than the generic "I want information" text.
+  // A slide without a model falls back to the plain enquiry.
+  const activeProduct = active.product
+    ? ALL_PRODUCTS.find((p) => p.slug === active.product)
+    : null;
+  const origin = typeof window === "undefined" ? "" : window.location.origin;
+  const heroEnquiry = activeProduct
+    ? whatsappLink(productEnquiry(activeProduct, origin))
+    : whatsappLink();
+
   // Hand-picked catalogue shots — all transparent cut-outs that read
   // cleanly on the coloured brand panels.
   const qubixStrip = [
@@ -289,7 +301,7 @@ export default function Home() {
                 </Link>
                 <a
                   className="btn btn--ghost-dark btn--lg"
-                  href={whatsappLink()}
+                  href={heroEnquiry}
                   target="_blank"
                   rel="noreferrer"
                 >
