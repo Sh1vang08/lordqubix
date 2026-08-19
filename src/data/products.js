@@ -14,6 +14,19 @@ export const productImage = (slug) =>
   `${import.meta.env.BASE_URL}products/${slug}.webp`;
 
 /**
+ * Hero artwork: the same photograph cropped to the unit itself.
+ *
+ * The catalogue files sit on a 4/3 canvas with roughly 30% transparent
+ * padding above and below, which is right for a product card but leaves the
+ * hero unit small however large the box is. These copies are trimmed to the
+ * chassis and re-padded to one shared ratio, so the featured model reads at
+ * roughly twice the height while the hero box stays a fixed size between
+ * slides.
+ */
+export const heroImage = (slug) =>
+  `${import.meta.env.BASE_URL}hero/${slug}.webp`;
+
+/**
  * Smaller copy for grids, where a card shows the product at ~250px.
  *
  * Losslessly encoded like the full-size version — identical pixels, just

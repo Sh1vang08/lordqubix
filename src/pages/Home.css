@@ -119,18 +119,19 @@
 /* Only the active slide's artwork is rendered (see Home.jsx), so this styles
    a single visible image rather than a stack of hidden ones.
 
-   The slides have different aspect ratios (2.86 vs 3.21), so letting the
-   image size itself made the hero grow and shrink on every rotation. That
-   resized the document every few seconds and shifted the page under the
-   visitor. A fixed box with object-fit: contain holds the layout still. */
+   A fixed box, not auto height: letting the image size itself would resize
+   the hero on every rotation, which shifts the page under the visitor. The
+   box matches the artwork's own 4/3 ratio, so the unit fills the width it is
+   given instead of being letterboxed into a wider box. Every slide shares
+   that ratio, so the layout still never moves. */
 .hero__product {
   grid-area: 1 / 1;
   width: 100%;
   max-width: 640px;
-  /* Fixed box: the slides have different source ratios, and letting the image
-     size itself made the hero grow and shrink on every rotation, which
-     resized the document and shifted the page under the visitor. */
-  aspect-ratio: 16 / 9;
+  /* Matches the hero artwork, which is cropped to the chassis and padded to
+     one shared 2.6 ratio. A taller box only added empty space above and
+     below the unit; a wider one letterboxed it and wasted the width. */
+  aspect-ratio: 2.6;
   object-fit: contain;
   object-position: center;
   /* One soft contact shadow, nothing else. Stacked glow/brightness filters
@@ -941,9 +942,10 @@
   .hero__product {
     width: 100%;
     max-width: 100%;
-    /* Keep the reserved aspect box — `height: auto` here let the differing
-       slide ratios resize the hero again on every rotation. */
-    aspect-ratio: 16 / 9;
+    /* Keep a reserved box — `height: auto` would let the hero resize on
+       rotation — at the cropped artwork's ratio, so the unit spans the full
+       phone width. This is where the size was being lost. */
+    aspect-ratio: 2.6;
   }
 
   /* Keep the artwork inside the page gutter rather than bleeding to the

@@ -22,9 +22,9 @@ import {
   FAMILIES,
   sizeInches,
   sizesIn,
-  productImage,
   productThumb,
   productEnquiry,
+  heroImage,
 } from "../data/products";
 
 /** Drivers, and the sizes actually stocked, for the shop-by-size shortcuts. */
@@ -321,7 +321,7 @@ export default function Home() {
                   overlapping chassis read as a blurred, broken image. */}
               <img
                 key={active.titleAccent}
-                src={active.product ? productImage(active.product) : active.image}
+                src={active.product ? heroImage(active.product) : active.image}
                 alt={`${active.titleTop} ${active.titleAccent}`}
                 className={`hero__product is-active ${
                   active.product ? "hero__product--plate" : ""
@@ -336,7 +336,7 @@ export default function Home() {
                   i === slide ? null : (
                     <img
                       key={s.titleAccent}
-                      src={s.product ? productImage(s.product) : s.image}
+                      src={s.product ? heroImage(s.product) : s.image}
                       alt=""
                       loading="lazy"
                     />
