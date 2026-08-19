@@ -129,9 +129,9 @@
   width: 100%;
   max-width: 640px;
   /* Matches the hero artwork, which is cropped to the chassis and padded to
-     one shared 2.6 ratio. A taller box only added empty space above and
+     one shared 2.9 ratio. A taller box only added empty space above and
      below the unit; a wider one letterboxed it and wasted the width. */
-  aspect-ratio: 2.6;
+  aspect-ratio: 2.9;
   object-fit: contain;
   object-position: center;
   /* One soft contact shadow, nothing else. Stacked glow/brightness filters
@@ -724,10 +724,11 @@
   }
 
   /* The halo is sized for the desktop stage; at phone width it spills over
-     the product and washes it out. */
+     the product and washes it out. Kept just inside the artwork now that
+     the unit runs nearly edge to edge. */
   .hero__halo {
-    inset: 12% 2%;
-    opacity: 0.75;
+    inset: 4% 6%;
+    opacity: 0.7;
   }
 
   .stats__inner {
@@ -945,13 +946,17 @@
     /* Keep a reserved box — `height: auto` would let the hero resize on
        rotation — at the cropped artwork's ratio, so the unit spans the full
        phone width. This is where the size was being lost. */
-    aspect-ratio: 2.6;
+    aspect-ratio: 2.9;
   }
 
-  /* Keep the artwork inside the page gutter rather than bleeding to the
-     screen edge, which reads as a cropped image. */
+  /* The unit is wide and short, so width is what limits how large it reads.
+     Pulling the artwork out into the page gutter buys back the ~22px each
+     side that the text column reserves. The image keeps its own transparent
+     margin, so the chassis still never touches the screen edge. */
   .hero__art {
-    padding-inline: 4px;
+    padding-inline: 0;
+    margin-inline: calc(var(--gutter) * -1);
+    width: calc(100% + var(--gutter) * 2);
   }
 }
 
