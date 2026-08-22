@@ -16,6 +16,9 @@ npm-debug.log*
 # public/products and public/products-thumb; these are the raw inputs.
 *.zip
 /assets/
+# Unprocessed studio JPEGs (~115MB). They are the input to the product
+# images, not something the site serves, so they must not reach the bundle.
+/public/JPEG/
 
 # Reference documents. The 2026 catalogue PDF is ~350MB of print artwork;
 # what the site needs from it lives in src/data/products.js.

@@ -2407,18 +2407,22 @@ export const FAMILIES = [
     slug: "components",
     label: "Drivers & Components",
     blurb: "Compression drivers, diaphragms and connectors",
+    // Catalogue order (2026 edition): compression drivers p21, diaphragms
+    // p22, connectors p23, then LORD's P.A. driver units on p35.
     categories: [
       "Compression Driver",
       "Diaphragms",
-      "P.A. Driver Unit",
       "Connector / Crossover / Line Array",
+      "P.A. Driver Unit",
     ],
   },
   {
     slug: "microphones",
     label: "Microphones & Wireless",
     blurb: "Wired microphones and wireless systems",
-    categories: ["PA Microphone", "Wireless Communication"],
+    // Catalogue order: Qubix wireless on p16 precedes LORD's wired PA
+    // microphones on p34.
+    categories: ["Wireless Communication", "PA Microphone"],
   },
   {
     slug: "processing",
