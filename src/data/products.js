@@ -36,6 +36,28 @@ export const heroImage = (slug) =>
 export const productThumb = (slug) =>
   `${import.meta.env.BASE_URL}products-thumb/${slug}.webp`;
 
+/**
+ * Models photographed for the 2026 shoot.
+ *
+ * The rest of the catalogue still uses older artwork, so anywhere the site
+ * picks one product to represent a group it should prefer a model from this
+ * set — otherwise a card can front a whole family with the weakest image on
+ * the page. Extend this as more photography arrives.
+ */
+export const PHOTOGRAPHED = new Set([
+  "15bh350", "15lm07", "15pd60", "15qh40dm", "18bh451", "18lm06", "18pd52",
+  "18pd52-1775480509-145", "18pd60", "18qh50dm", "21pd60", "21pd60dm",
+  "2310crossover", "234xl", "ct-450p", "ct-550p", "ct-750", "ct-950",
+  "d-2", "d-26", "d4599crossover", "g15-750", "kmc9", "m4", "m6usb",
+  "mt-1801", "mt-26000", "mx300usb", "qas-1210", "qas-1610", "qas-810",
+  "qb-2880", "qs-4599", "qs-650", "qs-880", "qx-4800", "qx-8000",
+  "skm9000", "sq-4", "sq-8", "td-16000", "td-9000",
+]);
+
+/** First item from `items` that has 2026 photography, else the first item. */
+export const bestShot = (items) =>
+  items.find((p) => PHOTOGRAPHED.has(p.slug)) || items[0];
+
 export const BRANDS = ["Qubix", "Lord"];
 
 export const CATEGORIES = [

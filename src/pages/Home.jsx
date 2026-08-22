@@ -25,6 +25,7 @@ import {
   productThumb,
   productEnquiry,
   heroImage,
+  bestShot,
 } from "../data/products";
 
 /** Drivers, and the sizes actually stocked, for the shop-by-size shortcuts. */
@@ -404,7 +405,10 @@ export default function Home() {
                   f.categories.includes(p.category)
                 );
                 if (!items.length) return null;
-                const sample = items[0];
+                // Lead with a 2026 photograph where the family has one: this
+                // card fronts a whole range, so it should not be the weakest
+                // image on the page.
+                const sample = bestShot(items);
                 return (
                   <Link
                     className="ccard"
@@ -448,7 +452,7 @@ export default function Home() {
               <div className="sizejump__row">
                 {SPEAKER_SIZES.map((n) => {
                   const items = SPEAKERS.filter((p) => sizeInches(p) === n);
-                  const sample = items[0];
+                  const sample = bestShot(items);
                   return (
                     <Link
                       key={n}
