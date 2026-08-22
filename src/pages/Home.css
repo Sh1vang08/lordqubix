@@ -445,16 +445,17 @@
   margin-bottom: 16px;
   border-radius: var(--r-sm);
   background: rgba(255, 255, 255, 0.03);
-  padding: 12px;
   overflow: hidden;
 }
 
-/* Filled rather than centred: a grid parent with place-items sizes the image
-   to its natural dimensions, which let tall shots spill over the card text. */
+/* `cover`, not `contain`: with padding and a wide panel, contain left dark
+   gutters either side of a 4/3 photo and shrank the product. Filling the
+   panel makes the photo the card's whole top edge, same as the category
+   cards below. */
 .feat-card__media img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 
@@ -866,16 +867,19 @@
    stretched to fill the box and `object-fit: contain` does the letterboxing —
    the same rule as .media-box in global.css. */
 .ccard__media {
-  height: 118px;
-  padding: 14px;
+  height: 132px;
   background: rgba(255, 255, 255, 0.03);
   overflow: hidden;
 }
 
+/* `cover`, not `contain`: the photographs are 4/3 on their own white
+   backdrop, so containing them in this wider panel left dark gutters either
+   side and shrank the product. Filling the panel makes the photo the card's
+   whole top edge. */
 .ccard__media img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
   transition: transform 0.4s var(--ease);
 }
@@ -1209,8 +1213,8 @@
   aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
-  /* The artwork is a cut-out with no margin of its own, so the gap between
-     the driver and its label has to come from here. */
+  /* The panel is 4/3, the same shape as the photographs, so `contain` fills
+     it without letterboxing. The gap to the label comes from here. */
   margin-bottom: 6px;
 }
 
