@@ -1,0 +1,92 @@
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  background: var(--navy-950);
+  color: #fff;
+  font-family: var(--font-ui);
+}
+
+.admin-nav {
+  border-right: 1px solid var(--paper-line);
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-nav__brand {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--gold-300);
+}
+
+.admin-nav nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-nav__link {
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: var(--on-dark-dim);
+  font-size: 13.5px;
+  text-decoration: none;
+}
+
+.admin-nav__link:hover {
+  background: var(--navy-850);
+  color: #fff;
+}
+
+.admin-nav__link.is-active {
+  background: var(--navy-800);
+  color: var(--gold-300);
+  font-weight: 600;
+}
+
+.admin-nav__foot {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--paper-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-nav__foot p {
+  font-size: 11.5px;
+  color: var(--on-dark-dim);
+  word-break: break-all;
+}
+
+.admin-nav__foot button {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--paper-line);
+  background: transparent;
+  color: #fff;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.admin-nav__foot button:hover {
+  border-color: var(--gold-400);
+  color: var(--gold-300);
+}
+
+.admin-main {
+  padding: 28px 32px;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.admin-main h1 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  margin-bottom: 20px;
+}

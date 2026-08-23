@@ -11,6 +11,10 @@ const CategoryAmplifiers = lazy(() => import("./pages/CategoryAmplifiers"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const About = lazy(() => import("./pages/About"));
 const Contact = lazy(() => import("./pages/Contact"));
+// Pulls in Supabase, @dnd-kit and the whole admin UI — none of which a
+// storefront visitor should ever download, so this stays behind its own
+// dynamic import rather than the shared chunk the public pages share.
+const AdminApp = lazy(() => import("./admin/AdminApp"));
 
 /** Reset scroll on navigation; honour in-page hash targets. */
 function ScrollManager() {
@@ -32,6 +36,18 @@ function ScrollManager() {
 
 export default function App() {
   const { pathname } = useLocation();
+
+  // The admin panel is a separate app mounted at the same router: no brand
+  // loader, scroll rail or background music, and its own auth gate. Kept as
+  // an early return rather than a nested <Route> so none of the public
+  // site's chrome below ever mounts on an /admin/* URL.
+  if (pathname.startsWith("/admin")) {
+    return (
+      <Suspense fallback={<div className="route-fallback" />}>
+        <AdminApp />
+      </Suspense>
+    );
+  }
 
   return (
     <>
