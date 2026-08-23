@@ -23,3 +23,7 @@ npm-debug.log*
 # Reference documents. The 2026 catalogue PDF is ~350MB of print artwork;
 # what the site needs from it lives in src/data/products.js.
 *.pdf
+
+# Unprocessed source video drops (raw 4K exports run 100MB+). The compressed
+# copy the site actually serves lives in public/video/.
+/Stage_Light_Teaser.mp4

@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Icon from "../components/Icon";
 import WhatsAppCta from "../components/WhatsAppCta";
 import BehindTheCraft from "../components/BehindTheCraft";
+import StageLightTeaser from "../components/StageLightTeaser";
 import { QubixMark, LordMark } from "../components/Logo";
 import {
   HERO_SLIDES,
@@ -479,6 +480,8 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        <StageLightTeaser />
 
         {/* ------------------------------------------------------- featured */}
         <section className="section section--deep">
