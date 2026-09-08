@@ -177,13 +177,19 @@ export async function setCollectionProducts(collectionId, orderedSlugs) {
  * Uploads one file to the product-images bucket under `${slug}/${kind}.webp`
  * and returns its public URL. `kind` is "full" | "thumb" | "og" so a product
  * can hold all three sizes without collisions.
+ *
+ * Always stored as .webp regardless of what was picked (a client uploading
+ * a .png or .jpg previously landed at a path this never matched, so the
+ * upload silently went nowhere the site would find it — cache-busted with a
+ * version query so a same-name re-upload isn't served stale from the
+ * bucket's or browser's cache).
  */
 export async function uploadProductImage(slug, kind, file) {
-  const path = `${slug}/${kind}.${file.name.split(".").pop()}`;
+  const path = `${slug}/${kind}.webp`;
   const { error } = await supabase.storage
     .from("product-images")
-    .upload(path, file, { upsert: true, cacheControl: "3600" });
+    .upload(path, file, { upsert: true, cacheControl: "3600", contentType: file.type });
   if (error) throw error;
   const { data } = supabase.storage.from("product-images").getPublicUrl(path);
-  return data.publicUrl;
+  return `${data.publicUrl}?v=${Date.now()}`;
 }

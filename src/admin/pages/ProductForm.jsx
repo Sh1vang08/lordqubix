@@ -110,12 +110,11 @@ export default function ProductForm() {
 
       if (imageFile) {
         const url = await uploadProductImage(saved.slug, "full", imageFile);
-        await updateProduct(saved.slug, { has_new_photo: true });
-        // The uploaded file becomes the product's canonical image at
-        // `${slug}/full.<ext>` in Storage; nothing else references `url`
-        // directly today, but keeping it here is where a future thumbnail/
-        // OG pipeline step would pick it up.
-        void url;
+        // image_url is what the live product page actually reads to show
+        // this upload — without it the file sits in Storage but the site
+        // keeps showing the old static image, which is indistinguishable
+        // from the upload having silently failed.
+        await updateProduct(saved.slug, { has_new_photo: true, image_url: url });
       }
 
       navigate("/admin/products");

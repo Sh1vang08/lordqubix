@@ -1,0 +1,12 @@
+-- The admin panel's photo upload had no way to tell the live site where the
+-- uploaded file actually landed: it wrote to Storage and set
+-- has_new_photo = true, but the site's productImage() only ever reads the
+-- static file at public/products/<slug>.webp, which the upload never
+-- touched. A client uploading a clean cut-out saw the old backgrounded
+-- image on the site regardless, because nothing connected the two.
+--
+-- image_url is the actual public Storage URL once a product has been
+-- re-photographed through the admin; null means "use the built-in static
+-- image", so every product migrated from products.js keeps working exactly
+-- as before until someone uploads a replacement for it.
+alter table products add column image_url text;

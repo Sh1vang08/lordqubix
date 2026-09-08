@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link, useParams, Navigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -11,6 +12,7 @@ import {
   productThumb,
   productEnquiry,
 } from "../data/products";
+import { supabase } from "../lib/supabase";
 import { useGsap, revealOnScroll, gsap, EASE, DUR } from "../anim/useAnim";
 import "./ProductDetail.css";
 
@@ -25,6 +27,32 @@ import "./ProductDetail.css";
 export default function ProductDetail() {
   const { slug } = useParams();
   const p = productBySlug(slug);
+
+  // The page's data otherwise comes entirely from the static catalogue
+  // (products.js), but a photo uploaded through the admin panel lands in
+  // Supabase, not that file. Checked here, on top of the static image, so a
+  // re-photographed product shows its new photo without a full data-source
+  // migration for the rest of the page. Falls back to the catalogue image
+  // until an upload exists, and again on any fetch failure.
+  const [imageUrl, setImageUrl] = useState(() => (p ? productImage(p.slug) : null));
+
+  useEffect(() => {
+    if (!p) return undefined;
+    setImageUrl(productImage(p.slug));
+    let cancelled = false;
+    supabase
+      .from("products")
+      .select("image_url")
+      .eq("slug", p.slug)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!cancelled && data?.image_url) setImageUrl(data.image_url);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [p]);
 
   const scope = useGsap(() => {
     if (!scope.current) return;
@@ -95,7 +123,7 @@ export default function ProductDetail() {
           <div className="pd__top">
             <div className="pd__stage">
               <img
-                src={productImage(p.slug)}
+                src={imageUrl}
                 alt={p.name}
                 width="900"
                 height="900"
